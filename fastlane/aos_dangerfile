@@ -1,0 +1,23 @@
+require "danger"
+
+build_id = ENV['BUILD_ID']
+build_url = ENV['BUILD_URL']
+pull_req_num = ENV['PULL_REQ_NUM']
+
+############################################################################################
+#                                   Jenkins PRA Results formatter                          #
+############################################################################################
+
+markdown("Pull Request Title: " + gitlab.pr_title)
+markdown("Pull Request Number: " + pull_req_num)
+markdown("Build Number: " + build_id)
+
+message('[Test Results]('+build_url+'artifact/app/build/reports/tests/testDebugUnitTest/index.html)')
+message('[Jenkins Build URL]('+build_url+')')
+
+warn("PR is classed as Work in Progress[DO NOT MERGE]") if github.pr_title.include? "[WIP]"
+warn("Big PR") if git.lines_of_code > 500
+
+####  Use to place in text in box in PR:
+####  message = +"\n---\n\n"
+####  message = +"\n---\n\n"
