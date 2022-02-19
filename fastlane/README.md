@@ -21,7 +21,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane android generate_rls_apk
 ```
 
-Run Release Build for BBM Android App
+Run Release Build for TestingSamples Android App
 
 ### android generate_dev_apk
 
@@ -37,7 +37,7 @@ Run Release Build for BBM Android App
 [bundle exec] fastlane android test_aos_pra
 ```
 
-Run unit tests for BBM Android App
+Run unit tests for TestingSamples Android App
 
 ### android test_aos_qe
 
@@ -45,7 +45,7 @@ Run unit tests for BBM Android App
 [bundle exec] fastlane android test_aos_qe
 ```
 
-Run emulator instrumentation tests for BBM Android App
+Run emulator instrumentation tests for TestingSamples Android App
 
 ### android test_aos_qe_jira
 
@@ -53,7 +53,7 @@ Run emulator instrumentation tests for BBM Android App
 [bundle exec] fastlane android test_aos_qe_jira
 ```
 
-Run Unit Tests and UI Tests for BBM and upload results to JIRA
+Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA
 
 ### android setup_emulator
 

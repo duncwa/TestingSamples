@@ -1,10 +1,10 @@
 #!/usr/bin/env groovy
 
 //
-//  Jenkinsfile-android-pra.groovy
-//  BasicSample
-//  Created by Duncan Wallace 09/27/2020
-//  Copyright © 2020. Duncwa LLC.  All rights reserved
+//  Jenkinsfile-aos-qe-jira.groovy
+//  TestingSamples
+//  Created by Duncan Wallace 02/19/2022
+//  Copyright © 2022. Duncwa LLC.  All rights reserved
 
 pipeline {
     agent { label "fastlane_pra" }
