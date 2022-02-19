@@ -15,17 +15,15 @@ pipeline {
   }
 
   environment {
-    DANGER_GITLAB_API_CREDS = "s.gitlabtoken"
-    DANGER_GITLAB_API_TOKEN = "${env.DANGER_GITLAB_API_CREDS_PSW}"
-    DANGER_GITLAB_HOST="https://gitlab.com/duncwa/timefighter"
-    DANGER_GITLAB_API_BASE_URL="https://gitlab.com/duncwa/timefighter/api/v4"
-
+    DANGER_GITHUB_API_TOKEN = credentials("s.githubtoken")
+    DANGER_GITHUB_CREDS_USR = credentials("s.githubtoken_full")
+    DANGER_GITHUB_API_TOKEN_USR = "${env.DANGER_GITHUB_CREDS_USR}"
+    DANGER_GITHUB_API_TOKEN_PSW = "${env.DANGER_GITHUB_CREDS_PSW}"
     ghprbPullId = "${env.PULL_REQ_NUM}"
-    PULL_REQ_NUM = "${env.PULL_REQ_NUM}"
     BUILD_NUM = "${env.BUILD_ID}"
     PR_NUM = "${env.PULL_REQ_NUM}"
-    PR_URL = "https://gitlab.com/duncwa/timefighter/-/merge_requests/${env.PULL_REQ_NUM}"
-    GIT_URL_1 = "https://gitlab.com/duncwa/timefighter"
+    PR_URL = "https://github.com/duncwa/TestingSamples/pull/${env.PULL_REQ_NUM}"
+    GIT_URL_1 = "https://github.com/duncwa/TestingSamples"
     SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
   }
 
@@ -45,7 +43,7 @@ pipeline {
         sh 'bundle exec fastlane test_aos_pra'
       }
       post {
-        always { stash includes: "app/build/**/*", name: "test_aos_pra", allowEmpty: true }
+        always { stash includes: "*/build/**/*", name: "test_aos_pra", allowEmpty: true }
       }
     }
   }
@@ -56,7 +54,7 @@ pipeline {
         try { unstash "test_aos_pra" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
       }
       sh "bundle exec fastlane aos_danger"
-      archiveArtifacts artifacts: "app/build/**/*", fingerprint: true
+      archiveArtifacts artifacts: "*/build/**/*", fingerprint: true
     }
 
     success {
