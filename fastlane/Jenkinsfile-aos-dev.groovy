@@ -1,10 +1,10 @@
 #!/usr/bin/env groovy
 
 //
-//  Jenkinsfile-ios-dev.groovy
-//  GHFollowers
-//  Created by Duncan Wallace 08/21/2020
-//  Copyright © 2020. Duncwa LLC.  All rights reserved
+//  Jenkinsfile-aos-dev.groovy
+//  TestingSamples
+//  Created by Duncan Wallace 02/19/2022
+//  Copyright © 2022. Duncwa LLC.  All rights reserved
 
 pipeline {
     agent { label "fastlane_pra" }

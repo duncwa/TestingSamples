@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 #
 #  Fastfile
-#  TimeFighter
-#  Created by Duncan Wallace 12/16/2021
-#  Copyright © 2021. Duncwa LLC.  All rights reserved
+#  TestingSamples
+#  Created by Duncan Wallace 02/19/2022
+#  Copyright © 2022. Duncwa LLC.  All rights reserved
 
 require_relative "functions/readable_time"
 require_relative "functions/nilerize"
@@ -11,12 +11,12 @@ require_relative "functions/nilerize"
 default_platform(:android)
 
 platform :android do
-  desc "Run Release Build for BBM Android App"
+  desc "Run Release Build for TestingSamples Android App"
   lane :generate_rls_apk do
     gradle(
       task: "assemble",
       build_type: "Release",
-      project_dir: '.'
+      project_dir: 'ui/espresso/BasicSample'
     )
   end
 
@@ -24,29 +24,30 @@ platform :android do
     gradle(
       task: "assemble",
       build_type: "Release",
-      project_dir: '.'
+      project_dir: 'ui/espresso/BasicSample'
     )
   end
 
-  desc "Run unit tests for BBM Android App"
+  desc "Run unit tests for TestingSamples Android App"
   lane :test_aos_pra do
     gradle(
       task: "testDebugUnitTest",
-      project_dir: '.'
+      flags: "-PCoverageEnabled=true",
+      project_dir: 'ui/espresso/BasicSample'
     )
   end
 
 
-  desc "Run emulator instrumentation tests for BBM Android App"
+  desc "Run emulator instrumentation tests for TestingSamples Android App"
   lane :test_aos_qe do
     setup_emulator
     gradle(
-      task: "connectedAndroidTest",
-      project_dir: '.'
+      task: "connectedAndroidDebugTest",
+      project_dir: 'ui/espresso/BasicSample'
     )
   end
 
-  desc "Run Unit Tests and UI Tests for BBM and upload results to JIRA"
+  desc "Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA"
   lane :test_aos_qe_jira do
     gradle(
       task: "connectedAndroidTest",

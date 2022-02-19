@@ -1,9 +1,9 @@
 #!/usr/bin/env groovy
 
-//  Jenkinsfile-ios-mbp-pra.groovy
-//  TimeFighter
-//  Created by Duncan Wallace 12/16/2021
-//  Copyright © 2021. Duncwa LLC.  All rights reserved
+//  Jenkinsfile-aos-mbp-pra.groovy
+//  TestingSamples
+//  Created by Duncan Wallace 02/19/2022
+//  Copyright © 2022. Duncwa LLC.  All rights reserved
 
 pipeline {
   agent { label "fastlane_pra" }
