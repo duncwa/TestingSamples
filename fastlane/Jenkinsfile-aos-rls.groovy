@@ -1,3 +1,11 @@
+#!/usr/bin/env groovy
+
+//
+//  Jenkinsfile-aos-rls.groovy
+//  TestingSamples
+//  Created by Duncan Wallace 02/19/2022
+//  Copyright © 2022. Duncwa LLC.  All rights reserved
+
 pipeline {
     agent any
 

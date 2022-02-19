@@ -1,3 +1,10 @@
+#!/usr/bin/env markdown
+#
+#   aos_dangerfile
+#   TestingSamples
+#   Created by Duncan Wallace 02/19/2022
+#   Copyright © 2022. Duncwa LLC.  All rights reserved
+
 require "danger"
 
 build_id = ENV['BUILD_ID']
@@ -12,7 +19,7 @@ markdown("Pull Request Title: " + gitlab.pr_title)
 markdown("Pull Request Number: " + pull_req_num)
 markdown("Build Number: " + build_id)
 
-message('[Test Results]('+build_url+'artifact/app/build/reports/tests/testDebugUnitTest/index.html)')
+message('[Test Results BasicSample]('+build_url+'artifact/ui/espresso/BasicSample/build/reports/tests/testDebugUnitTest/index.html)')
 message('[Jenkins Build URL]('+build_url+')')
 
 warn("PR is classed as Work in Progress[DO NOT MERGE]") if github.pr_title.include? "[WIP]"
