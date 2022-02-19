@@ -32,7 +32,6 @@ platform :android do
   lane :test_aos_pra do
     gradle(
       task: "testDebugUnitTest",
-      flags: "-PCoverageEnabled=true",
       project_dir: 'ui/espresso/BasicSample'
     )
   end
