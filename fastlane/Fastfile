@@ -82,6 +82,16 @@ platform :android do
     # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
   end
 
+  desc "Perform Inspection of Artifacts using Bulkextractor"
+  lane :run_aos_ins do
+    generate_rls_ipa
+    ## Call inspection bulkextractor on *.apk/abb and dSYMS file
+    sh 'echo $PWD'
+    sh 'echo "Running Bulkextractor inspection"'
+    sh 'bulk_extractor -o ../ui/espresso/BasicSample/app/build/outputs/apk/ins -R ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk'
+    # sh 'bulk_extractor -o build/output-apk -R ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.abb'
+  end
+
   desc "Build debug and test APK for screenshots"
   lane :build_for_screengrab do
     gradle(
