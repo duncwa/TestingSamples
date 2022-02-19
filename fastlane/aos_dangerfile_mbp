@@ -16,7 +16,7 @@ pull_req_num = ENV['CHANGE_ID']
 #                                   Jenkins PRA Results formatter                          #
 ############################################################################################
 
-markdown("Pull Request Title: " + gitlab.pr_title)
+markdown("Pull Request Title: " + github.pr_title)
 markdown("Pull Request Number: " + pull_req_num)
 markdown("Build Number: " + build_id)
 

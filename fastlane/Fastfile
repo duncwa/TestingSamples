@@ -150,18 +150,20 @@ platform :android do
     )
   end
 
+
   desc "Run Slack reporting for PRA"
   lane :post_pra_slack_message do |options|
     build_url = ENV["BUILD_URL"]
+    pr_url = ENV["PR_URL"]
     job_base_name = ENV["JOB_BASE_NAME"]
     build_id = ENV["BUILD_ID"]
     pr_url = ENV["PR_URL"]
-    change_id = ENV["CHANGE_ID"]
+    pull_req_num = ENV["PR_NUM"]
     run_time = to_clock(options[:run_time])
     status = options[:status]
     result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
     success = status == "SUCCESS" ? true : false
-    message = "*#{status} <#{pr_url}|PR-#{change_id}> - - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/app/build/reports/tests/testDebugUnitTest/index.html'}|#{'Results'}> *"
+    message = "*#{status} <#{pr_url}|PR-#{pull_req_num}> - - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html'}|#{'Results'}> *"
     slack(
       channel: ENV["SLACK_CHANNEL"],
       message: message,
