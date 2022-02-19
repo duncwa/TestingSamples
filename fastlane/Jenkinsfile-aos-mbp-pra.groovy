@@ -15,18 +15,16 @@ pipeline {
   }
 
   environment {
-    DANGER_CREDS = credentials("s.gitlabtoken_uns")
-    DANGER_GITLAB_USERNAME = "${env.DANGER_CREDS_USR}"
-    DANGER_GITLAB_PASSWORD = "${env.DANGER_CREDS_PSW}"
-
-    //DANGER_GITLAB_HOST="https://gitlab.com/duncwa/timefighter"
-    //DANGER_GITLAB_API_BASE_URL="https://gitlab.com/api/v4"
-
-    CHANGE_ID = "${env.GITLABMERGEREQUESTID}"
+    DANGER_GITHUB_API_TOKEN = credentials("s.githubtoken")
+    DANGER_GITHUB_CREDS_USR = credentials("s.githubtoken_full")
+    DANGER_GITHUB_API_TOKEN_USR = "${env.DANGER_GITHUB_CREDS_USR}"
+    DANGER_GITHUB_API_TOKEN_PSW = "${env.DANGER_GITHUB_CREDS_PSW}"
+    ghprbPullId = "${env.CHANGE_ID}"
+    CHANGE_ID = "${env.CHANGE_ID}"
     BUILD_NUM = "${env.BUILD_ID}"
-    PR_NUM = "${env.GITLABMERGEREQUESTIID}"
-    PR_URL = "https://gitlab.com/duncwa/timefighter/-/merge_requests/${env.CHANGE_ID}"
-    GIT_URL_1 = "https://gitlab.com/duncwa/timefighter"
+    PR_NUM = "${env.CHANGE_ID}"
+    PR_URL = "https://github.com/duncwa/TestingSamples/pull/${env.CHANGE_ID}"
+    GIT_URL_1 = "https://github.com/duncwa/TestingSamples"
     SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
   }
 
