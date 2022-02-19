@@ -1,0 +1,308 @@
+#!/usr/bin/env ruby
+#
+#  Fastfile
+#  TimeFighter
+#  Created by Duncan Wallace 12/16/2021
+#  Copyright © 2021. Duncwa LLC.  All rights reserved
+
+require_relative "functions/readable_time"
+require_relative "functions/nilerize"
+
+default_platform(:android)
+
+platform :android do
+  desc "Run Release Build for BBM Android App"
+  lane :generate_rls_apk do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: '.'
+    )
+  end
+
+  lane :generate_dev_apk do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: '.'
+    )
+  end
+
+  desc "Run unit tests for BBM Android App"
+  lane :test_aos_pra do
+    gradle(
+      task: "testDebugUnitTest",
+      project_dir: '.'
+    )
+  end
+
+
+  desc "Run emulator instrumentation tests for BBM Android App"
+  lane :test_aos_qe do
+    setup_emulator
+    gradle(
+      task: "connectedAndroidTest",
+      project_dir: '.'
+    )
+  end
+
+  desc "Run Unit Tests and UI Tests for BBM and upload results to JIRA"
+  lane :test_aos_qe_jira do
+    gradle(
+      task: "connectedAndroidTest",
+      project_dir: '.'
+    )
+    # sh './gradlew testDebugUnitTest | xcpretty -r junit'
+    # sh 'curl -H "Content-Type: multipart/form-data" -u duncwa:"password" -F "file=@build/reports/junit.xml" http://jira-prod.local:8081/rest/raven/2.0/import/execution/junit?projectKey=GHFLS-2'
+  end
+
+  desc "Startup the emulator"
+  lane :setup_emulator do
+    android_home = ENV['ANDROID_HOME']
+    device = ENV['DEVICE']
+    adb(
+      serial: device,
+      command: "kill-server"
+    )
+    puts android_home
+    sh("#{android_home}/platform-tools/adb start-server")
+    sh("#{android_home}/emulator/emulator", "-list-avds")
+    sh("#{android_home}/emulator/emulator -avd #{device} ")
+  end
+
+  desc "Shutdown the emulator"
+  lane :shutdown_emulator do
+    android_home = ENV['ANDROID_HOME']
+    device = ENV['DEVICE']
+    adb(
+      serial: device,
+      command: "kill-server"
+    )
+    # sh("#{android_home}/emulator/emulator", "-list-avds")
+    # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
+  end
+
+  desc "Build debug and test APK for screenshots"
+  lane :build_for_screengrab do
+    gradle(
+      task: 'clean'
+    )
+    build_android_app(
+      task: 'assemble',
+      build_type: 'Debug',
+      project_dir: '.'
+    )
+    build_android_app(
+      task: 'assemble',
+      build_type: 'AndroidTest',
+      project_dir: '.'
+    )
+  end
+
+  desc "Run Danger for PRA Commit to Repo Comments"
+  lane :aos_danger do
+    danger(
+      use_bundle_exec: true,
+      verbose: true,
+      danger_id: "aos_dangerfile",
+      new_comment: false,
+      dangerfile: "fastlane/aos_dangerfile"
+    )
+  end
+
+  desc "Run Danger for MBP PRA Commit to Repo Comments"
+  lane :aos_danger_mbp do
+    danger(
+      use_bundle_exec: true,
+      verbose: true,
+      danger_id: "aos_dangerfile_mbp",
+      new_comment: false,
+      dangerfile: "fastlane/aos_dangerfile_mbp"
+    )
+  end
+
+  desc "Run Slack Testing"
+  lane :slack_test do
+    build_url = build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    build_id = "1"
+    run_time = to_clock(4200)
+    status = "SUCCESS"
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack reporting for PRA"
+  lane :post_pra_slack_message do |options|
+    build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    build_id = ENV["BUILD_ID"]
+    pr_url = ENV["PR_URL"]
+    change_id = ENV["CHANGE_ID"]
+    run_time = to_clock(options[:run_time])
+    status = options[:status]
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} <#{pr_url}|PR-#{change_id}> - - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/app/build/reports/tests/testDebugUnitTest/index.html'}|#{'Results'}> *"
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack reporting for DEV"
+  lane :post_dev_slack_message do |options|
+    build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    appcenter_url = ENV["APPCENTER_DEV_APP_URL"]
+    build_id = ENV["BUILD_ID"]
+    run_time = to_clock(options[:run_time])
+    status = options[:status]
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{appcenter_url}|#{'AppCenter Results'}>*"
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack reporting for RLS"
+  lane :post_rls_slack_message do |options|
+    build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    appcenter_url = ENV["APPCENTER_RLS_APP_URL"]
+    build_id = ENV["BUILD_ID"]
+    run_time = to_clock(options[:run_time])
+    status = options[:status]
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{appcenter_url}|#{'AppCenter Results'}>*"
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack reporting for QE"
+  lane :post_qe_ios_slack_message do |options|
+    build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    build_id = ENV["BUILD_ID"]
+    pwd = ENV["PWD"]
+    run_time = to_clock(options[:run_time])
+    status = options[:status]
+    android_project = ENV["ANDROID_PROJECT"]
+    test_task = ENV["TEST_TASK"]
+    # result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    # message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
+
+    # XML parsing
+    output_xml = "#{pwd}/fastlane/test_output/report.junit"
+    document = File.open(output_xml) { |f| Nokogiri::XML(f) }
+    # document = Nokogiri::XML(File.open(output_xml))
+    puts "Document : #{document}"
+    all_tests = nil
+    retry_tests = nil
+    succeeded_tests = 0
+    percent_tests = 0
+
+    begin
+      all_tests = document.at_xpath("/*/@tests") != nil ? document.at_xpath("/*/@tests").value.to_i : 0
+      puts "====================== tests in testsuites : #{all_tests}"
+
+      failures = document.at_xpath("/*/@failures") != nil ? document.at_xpath("/*/@failures").value.to_i : 0
+      puts "====================== failures in testsuites : #{failures}"
+
+      retries = document.at_xpath("/*/@retries") != nil ? document.at_xpath("/*/@retries").value.to_i : 0
+      puts "====================== retries in testsuites : #{retries}"
+
+      succeeded_tests = all_tests - failures
+
+      puts "succeeded_tests : #{succeeded_tests}"
+
+      if failures == 0
+        success = true
+        currentbuild_results = "SUCCESS"
+        tests_summary = all_tests == 1 ? " #{all_tests} test was successful.  Build Succeeded." : "#{succeeded_tests} successful tests.  Build Succeeded."
+        tests_summary = all_tests == 0 ? " Zero tests succeeded.  Build Succeeded." : tests_summary
+        puts "===================tests_summary : #{tests_summary}"
+        percent_passed = (succeeded_tests.to_f / all_tests) * 100.0
+        puts "===================percent_passed : #{percent_passed}"
+
+        retry_summary = retries.positive? ? " #{percent_passed.round(2)}% of tests succeeded.  Successfully retried #{retries} tests." : " #{percent_passed.round(2)}% of tests passed. No tests retried."
+        puts "===================retry_summary : #{retry_summary}"
+
+      end
+
+      if failures >= 1
+        success = false
+        currentbuild_results = "UNSTABLE"
+        tests_summary = " #{failures} test(s) failed and #{succeeded_tests} test(s) succeeded.  Build Succeeded."
+        percent_passed = (succeeded_tests.to_f / all_tests) * 100.0
+        retry_summary = retries.positive? ? " #{percent_passed.round(2)}% of tests succeeded.  Successfully retried #{retries} tests." : " #{percent_passed.round(2)}% of tests passed. No tests retried."
+      end
+    rescue StandardError => e
+      UI.important("Failed to extract tests from \"#{output_xml}\: #{e}")
+      tests_summary = "Error unable to locate tests summary data."
+    end
+
+    if success
+      message = [
+        "🚀  <#{build_url}|*#{job_base_name} Build ##{build_id}*> completed in *#{run_time}* 🚀 ",
+        "`#{tests_summary}`",
+        "`#{retry_summary}`",
+        "*`✅  Android Task: #{test_task}`*",
+        "*`✅  Android Project Build: #{android_project}`*",
+        "`<#{build_url}artifact/fastlane/test_output/report.html|* Click to see last job test results*>`"
+      ].join("\n\t\t")
+    else
+      begin
+        failure_count = document.xpath("//testsuites//failures")
+      rescue StandardError => e
+        UI.error("Failed to load publish status.")
+        tests_summary = "Check earlier errors preventing tests from running."
+      end
+
+      qe_build_succeeded = true
+      qe_result = qe_build_succeeded
+      emoji = ->(value) { value ? "❌ " : "✅ " }
+
+      message = [
+        "💣💥 <#{build_url}|*#{job_base_name} Build ##{build_id}*> completed in *#{run_time}* 💣💥 ",
+        "`#{tests_summary}`",
+        "`#{retry_summary}`",
+        "*`#{emoji.call(qe_build_succeeded)} Xcode Scheme: #{test_scheme}`*",
+        "*`#{emoji.call(qe_build_succeeded)} Xcode Project Build: #{xcode_project}`*",
+        "*`#{emoji.call(qe_build_succeeded)} Xcode Test Plan: #{test_plan}`*",
+        "`<#{build_url}artifact/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
+      ].join("\n\t\t")
+    end
+
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
+      pretext: "iOS QE Test Job Summary",
+      success: success,
+      default_payloads: []
+    )
+  end
+end

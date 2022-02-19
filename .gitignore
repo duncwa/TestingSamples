@@ -1,11 +1,27 @@
-.idea
-*.iml
-local.properties
-build
-.gradle
+
 # Eclipse project files
 .project
-.settings/	
+.settings/
 .classpath
 bazel-*
 .DS_Store
+
+# Android IDE files
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+
+# Fastlane and Build
+Fastlane/*-output
+/build
+/captures
+.externalNativeBuild
+.cxx
+/app/secrets
+/*/build
