@@ -71,6 +71,14 @@ Startup the emulator
 
 Shutdown the emulator
 
+### android run_aos_ins
+
+```sh
+[bundle exec] fastlane android run_aos_ins
+```
+
+Perform Inspection of Artifacts using Bulkextractor
+
 ### android build_for_screengrab
 
 ```sh
@@ -103,6 +111,14 @@ Run Danger for MBP PRA Commit to Repo Comments
 
 Run Slack Testing
 
+### android slack_test_local
+
+```sh
+[bundle exec] fastlane android slack_test_local
+```
+
+Run Slack Testing
+
 ### android post_pra_slack_message
 
 ```sh
@@ -127,10 +143,10 @@ Run Slack reporting for DEV
 
 Run Slack reporting for RLS
 
-### android post_qe_ios_slack_message
+### android post_qe_aos_slack_message
 
 ```sh
-[bundle exec] fastlane android post_qe_ios_slack_message
+[bundle exec] fastlane android post_qe_aos_slack_message
 ```
 
 Run Slack reporting for QE
