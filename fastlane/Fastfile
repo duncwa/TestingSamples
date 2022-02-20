@@ -214,7 +214,7 @@ platform :android do
   end
 
   desc "Run Slack reporting for QE"
-  lane :post_qe_ios_slack_message do |options|
+  lane :post_qe_aos_slack_message do |options|
     build_url = ENV["BUILD_URL"]
     job_base_name = ENV["JOB_BASE_NAME"]
     build_id = ENV["BUILD_ID"]
@@ -227,7 +227,7 @@ platform :android do
     # message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
 
     # XML parsing
-    output_xml = "#{pwd}/fastlane/test_output/report.junit"
+    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.example.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
     document = File.open(output_xml) { |f| Nokogiri::XML(f) }
     # document = Nokogiri::XML(File.open(output_xml))
     puts "Document : #{document}"
@@ -283,11 +283,11 @@ platform :android do
         "`#{retry_summary}`",
         "*`✅  Android Task: #{test_task}`*",
         "*`✅  Android Project Build: #{android_project}`*",
-        "`<#{build_url}artifact/fastlane/test_output/report.html|* Click to see last job test results*>`"
+        "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     else
       begin
-        failure_count = document.xpath("//testsuites//failures")
+        failure_count = document.xpath("//testsuite//failures")
       rescue StandardError => e
         UI.error("Failed to load publish status.")
         tests_summary = "Check earlier errors preventing tests from running."
@@ -301,10 +301,9 @@ platform :android do
         "💣💥 <#{build_url}|*#{job_base_name} Build ##{build_id}*> completed in *#{run_time}* 💣💥 ",
         "`#{tests_summary}`",
         "`#{retry_summary}`",
-        "*`#{emoji.call(qe_build_succeeded)} Xcode Scheme: #{test_scheme}`*",
-        "*`#{emoji.call(qe_build_succeeded)} Xcode Project Build: #{xcode_project}`*",
-        "*`#{emoji.call(qe_build_succeeded)} Xcode Test Plan: #{test_plan}`*",
-        "`<#{build_url}artifact/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
+        "*`#{emoji.call(qe_build_succeeded)} Android Task: #{test_task}`*",
+        "*`#{emoji.call(qe_build_succeeded)} Android Project Build: #{android_project}`*",
+        "`<#{build_url}ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     end
 
@@ -312,7 +311,7 @@ platform :android do
       channel: ENV["SLACK_CHANNEL"],
       message: message,
       username: "cicdbuild",
-      pretext: "iOS QE Test Job Summary",
+      pretext: "AOS QE Test Job Summary",
       success: success,
       default_payloads: []
     )
