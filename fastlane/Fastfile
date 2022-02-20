@@ -133,7 +133,7 @@ platform :android do
 
   desc "Run Slack Testing"
   lane :slack_test do
-    build_url = build_url = ENV["BUILD_URL"]
+    build_url = ENV["BUILD_URL"]
     job_base_name = ENV["JOB_BASE_NAME"]
     build_id = "1"
     run_time = to_clock(4200)
@@ -145,6 +145,24 @@ platform :android do
       channel: ENV["SLACK_CHANNEL"],
       message: message,
       username: "cicdbuild",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack Testing"
+  lane :slack_test_local do
+    build_url = "http://mobileci-prod.local:8080/"
+    job_base_name = "Local Test"
+    build_id = "1"
+    run_time = to_clock(4200)
+    status = "SUCCESS"
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
+    slack(
+      channel: "#software",
+      message: message,
       success: success,
       default_payloads: []
     )
