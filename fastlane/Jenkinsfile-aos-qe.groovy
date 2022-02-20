@@ -39,7 +39,7 @@ pipeline {
               sh 'bundle exec fastlane test_aos_qe'
           }
           post {
-            always { stash includes: "*/build/**/*", name: "test_aos_qe", allowEmpty: true }
+            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe", allowEmpty: true }
           }
       }
     }
@@ -49,7 +49,7 @@ pipeline {
         script {
           try { unstash "test_aos_qe" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
-        archiveArtifacts artifacts: "*/build/**/*", fingerprint: true
+        archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
 
       success {
