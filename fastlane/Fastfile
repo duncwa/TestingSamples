@@ -327,6 +327,7 @@ platform :android do
     slack(
       channel: ENV["SLACK_CHANNEL"],
       message: message,
+      username: "cicdbuild",
       pretext: "AOS QE Test Job Summary",
       success: success,
       default_payloads: []
