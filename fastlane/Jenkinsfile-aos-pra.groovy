@@ -44,7 +44,7 @@ pipeline {
         sh 'bundle exec fastlane test_aos_pra'
       }
       post {
-        always { stash includes: "*/build/**/*", name: "test_aos_pra", allowEmpty: true }
+        always { stash includes: "build/**/*", name: "test_aos_pra", allowEmpty: true }
       }
     }
   }
@@ -55,7 +55,7 @@ pipeline {
         try { unstash "test_aos_pra" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
       }
       sh "bundle exec fastlane aos_danger"
-      archiveArtifacts artifacts: "*/build/**/*", fingerprint: true
+      archiveArtifacts artifacts: "build/**/*", fingerprint: true
     }
 
     success {
