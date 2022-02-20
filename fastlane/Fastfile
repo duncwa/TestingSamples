@@ -41,7 +41,7 @@ platform :android do
   lane :test_aos_qe do
     setup_emulator
     gradle(
-      task: "connectedAndroidDebugTest",
+      task: "connectedDebugAndroidTest",
       project_dir: 'ui/espresso/BasicSample'
     )
   end
@@ -84,7 +84,7 @@ platform :android do
 
   desc "Perform Inspection of Artifacts using Bulkextractor"
   lane :run_aos_ins do
-    generate_rls_ipa
+    generate_rls_apk
     ## Call inspection bulkextractor on *.apk/abb and dSYMS file
     sh 'echo $PWD'
     sh 'echo "Running Bulkextractor inspection"'
@@ -320,7 +320,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`#{emoji.call(qe_build_succeeded)} Android Task: #{test_task}`*",
         "*`#{emoji.call(qe_build_succeeded)} Android Project Build: #{android_project}`*",
-        "`<#{build_url}ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
+        "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     end
 

@@ -37,7 +37,7 @@ pipeline {
             sh 'bundle exec fastlane run_aos_ins'
           }
           post {
-            always { stash includes: "fastlane/build/**/*", name: "run_ios_ins", allowEmpty: true }
+            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "run_aos_ins", allowEmpty: true }
           }
       }
     }
@@ -45,10 +45,9 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "run_ios_ins" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "run_aos_ins" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
-        archiveArtifacts artifacts: "fastlane/build/*dSYM.zip", fingerprint: true
-        archiveArtifacts artifacts: "fastlane/build/*.ipa", fingerprint: true
+        archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/output/**/*.apk", fingerprint: true
       }
 
       success {
