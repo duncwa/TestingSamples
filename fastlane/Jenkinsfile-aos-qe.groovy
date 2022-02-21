@@ -8,6 +8,7 @@
 
 pipeline {
     agent { label "fastlane_pra" }
+    tools { "JDK-11-0-2" }
 
     options {
       ansiColor("xterm")
