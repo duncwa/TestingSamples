@@ -38,7 +38,7 @@ pipeline {
             sh 'bundle exec fastlane bex_aos_ins'
           }
           post {
-            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "run_aos_ins", allowEmpty: true }
+            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "bex_aos_ins", allowEmpty: true }
           }
       }
     }
@@ -46,7 +46,7 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "run_aos_ins" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "bex_aos_ins" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/outputs/apk/release/**/*.apk", fingerprint: true
         archiveArtifacts artifacts: "fastlane/build/output-*/**/*", fingerprint: true
