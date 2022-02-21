@@ -17,6 +17,7 @@ pipeline {
 
     environment {
       BUILD_NUM = "${env.BUILD_ID}"
+      SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
     }
 
