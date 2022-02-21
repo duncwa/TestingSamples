@@ -11,6 +11,37 @@ require_relative "functions/nilerize"
 default_platform(:android)
 
 platform :android do
+
+  ##################################################
+  #  AOS DEV and RLS Lanes
+  ##################################################
+
+  desc "Upload apk and mapping results to AppCenter"
+  lane :appcenter_upload_rls do
+    appcenter_upload(
+      api_token: ENV["APPCENTER_TOKEN_DLO"],
+      owner_name: ENV["APPCENTER_ORG"],
+      owner_type: "organization", # Default is user - set to organization for appcenter organizations
+      app_name: ENV["APPCENTER_RLS_APP_NAME"],
+      notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
+      file: "ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk",
+      dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
+      build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
+      version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
+      app_platform: "android",
+      app_os: "android"
+    )
+  end
+
+  desc "Run Develop Build for TestingSamples Android App"
+  lane :generate_dev_apk do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+      project_dir: 'ui/espresso/BasicSample'
+    )
+  end
+
   desc "Run Release Build for TestingSamples Android App"
   lane :generate_rls_apk do
     gradle(
@@ -20,13 +51,9 @@ platform :android do
     )
   end
 
-  lane :generate_dev_apk do
-    gradle(
-      task: "assemble",
-      build_type: "Release",
-      project_dir: 'ui/espresso/BasicSample'
-    )
-  end
+  ##################################################
+  #  AOS PRA and QE Lanes
+  ##################################################
 
   desc "Run unit tests for TestingSamples Android App"
   lane :test_aos_pra do
@@ -35,7 +62,6 @@ platform :android do
       project_dir: 'ui/espresso/BasicSample'
     )
   end
-
 
   desc "Run emulator instrumentation tests for TestingSamples Android App"
   lane :test_aos_qe do
@@ -81,6 +107,10 @@ platform :android do
     # sh("#{android_home}/emulator/emulator", "-list-avds")
     # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
   end
+
+  ##################################################
+  #  AOS INS, Screenshots and Danger Lanes
+  ##################################################
 
   desc "Perform Inspection of Artifacts using Bulkextractor"
   lane :run_aos_ins do
@@ -131,64 +161,9 @@ platform :android do
     )
   end
 
-  desc "Run Slack Testing"
-  lane :slack_test do
-    build_url = ENV["BUILD_URL"]
-    job_base_name = ENV["JOB_BASE_NAME"]
-    build_id = "1"
-    run_time = to_clock(4200)
-    status = "SUCCESS"
-    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
-    success = status == "SUCCESS" ? true : false
-    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
-    slack(
-      channel: ENV["SLACK_CHANNEL"],
-      message: message,
-      username: "cicdbuild",
-      success: success,
-      default_payloads: []
-    )
-  end
-
-  desc "Run Slack Testing"
-  lane :slack_test_local do
-    build_url = "http://mobileci-prod.local:8080/"
-    job_base_name = "Local Test"
-    build_id = "1"
-    run_time = to_clock(4200)
-    status = "SUCCESS"
-    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
-    success = status == "SUCCESS" ? true : false
-    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
-    slack(
-      channel: "#software",
-      message: message,
-      success: success,
-      default_payloads: []
-    )
-  end
-
-
-  desc "Run Slack reporting for PRA"
-  lane :post_pra_slack_message do |options|
-    build_url = ENV["BUILD_URL"]
-    pr_url = ENV["PR_URL"]
-    job_base_name = ENV["JOB_BASE_NAME"]
-    build_id = ENV["BUILD_ID"]
-    pr_url = ENV["PR_URL"]
-    pull_req_num = ENV["PR_NUM"]
-    run_time = to_clock(options[:run_time])
-    status = options[:status]
-    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
-    success = status == "SUCCESS" ? true : false
-    message = "*#{status} <#{pr_url}|PR-#{pull_req_num}> - - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html'}|#{'Results'}> *"
-    slack(
-      channel: ENV["SLACK_CHANNEL"],
-      message: message,
-      success: success,
-      default_payloads: []
-    )
-  end
+  ##################################################
+  #  AOS Slack Lanes
+  ##################################################
 
   desc "Run Slack reporting for DEV"
   lane :post_dev_slack_message do |options|
@@ -210,26 +185,27 @@ platform :android do
     )
   end
 
-  desc "Run Slack reporting for RLS"
-  lane :post_rls_slack_message do |options|
+  desc "Run Slack reporting for PRA"
+  lane :post_pra_slack_message do |options|
     build_url = ENV["BUILD_URL"]
+    pr_url = ENV["PR_URL"]
     job_base_name = ENV["JOB_BASE_NAME"]
-    appcenter_url = ENV["APPCENTER_RLS_APP_URL"]
     build_id = ENV["BUILD_ID"]
+    pr_url = ENV["PR_URL"]
+    pull_req_num = ENV["PR_NUM"]
     run_time = to_clock(options[:run_time])
     status = options[:status]
     result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
     success = status == "SUCCESS" ? true : false
-    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{appcenter_url}|#{'AppCenter Results'}>*"
+    message = "*#{status} <#{pr_url}|PR-#{pull_req_num}> - - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html'}|#{'Results'}> *"
     slack(
       channel: ENV["SLACK_CHANNEL"],
       message: message,
-      username: "cicdbuild",
       success: success,
       default_payloads: []
     )
   end
-
+  
   desc "Run Slack reporting for QE"
   lane :post_qe_aos_slack_message do |options|
     build_url = ENV["BUILD_URL"]
@@ -329,6 +305,45 @@ platform :android do
       message: message,
       username: "cicdbuild",
       pretext: "AOS QE Test Job Summary",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack reporting for RLS"
+  lane :post_rls_slack_message do |options|
+    build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    appcenter_url = ENV["APPCENTER_RLS_APP_URL"]
+    build_id = ENV["BUILD_ID"]
+    run_time = to_clock(options[:run_time])
+    status = options[:status]
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{appcenter_url}|#{'AppCenter Results'}>*"
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
+      success: success,
+      default_payloads: []
+    )
+  end
+
+  desc "Run Slack Testing"
+  lane :slack_test do
+    build_url = ENV["BUILD_URL"]
+    job_base_name = ENV["JOB_BASE_NAME"]
+    build_id = "1"
+    run_time = to_clock(4200)
+    status = "SUCCESS"
+    result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
+    success = status == "SUCCESS" ? true : false
+    message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
+    slack(
+      channel: ENV["SLACK_CHANNEL"],
+      message: message,
+      username: "cicdbuild",
       success: success,
       default_payloads: []
     )
