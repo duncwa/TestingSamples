@@ -35,7 +35,7 @@ pipeline {
       stage('Inspect for Sensitive Data') {
           steps {
             echo 'Run Inspection'
-            sh 'bundle exec fastlane run_aos_ins'
+            sh 'bundle exec fastlane bex_aos_ins'
           }
           post {
             always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "run_aos_ins", allowEmpty: true }
@@ -49,7 +49,7 @@ pipeline {
           try { unstash "run_aos_ins" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/outputs/apk/release/**/*.apk", fingerprint: true
-        archiveArtifacts artifacts: "fastlane/build/output-*", fingerprint: true
+        archiveArtifacts artifacts: "fastlane/build/output-*/**/*", fingerprint: true
       }
 
       success {
