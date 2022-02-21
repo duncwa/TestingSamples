@@ -118,7 +118,8 @@ platform :android do
     ## Call inspection bulkextractor on *.apk/abb and dSYMS file
     sh 'echo $PWD'
     sh 'echo "Running Bulkextractor inspection"'
-    sh 'bulk_extractor -o build/output-apk -R ${pwd}/ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk'
+    sh 'mkdir build'
+    sh 'bulk_extractor -o build/output-apk -R ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk'
     # sh 'bulk_extractor -o build/output-apk -R ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.abb'
   end
 
