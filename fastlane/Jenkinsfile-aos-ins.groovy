@@ -49,6 +49,7 @@ pipeline {
           try { unstash "run_aos_ins" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/outputs/apk/release/**/*.apk", fingerprint: true
+        archiveArtifacts artifacts: "fastlane/build/output-*", fingerprint: true
       }
 
       success {
