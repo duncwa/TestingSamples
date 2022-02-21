@@ -1,12 +1,12 @@
 {
   "avd_list": [
     {
-      "avd_name": "Pixel_4_XL_API_29",
+      "avd_name": "Nexus_5X_API_31",
 
-      "create_avd_package": "system-images;android-28;google_apis_playstore;x86",
-      "create_avd_device": "Pixel 4 XL",
+      "create_avd_package": "system-images;android-31;google_apis_playstore;x86",
+      "create_avd_device": "Nexus 5X",
       "create_avd_tag": "google_apis_playstore",
-      "create_avd_abi": "x86",
+      "create_avd_abi": "x86_64",
       "create_avd_additional_options": "",
       "create_avd_hardware_config_filepath": "",
 
