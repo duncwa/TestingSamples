@@ -5,32 +5,32 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000331">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00047">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android setup_emulator lane" time="0.000179">
+      <testcase classname="fastlane.lanes" name="1: Switch to android setup_emulator lane" time="0.000403">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: adb" time="0.010481">
+      <testcase classname="fastlane.lanes" name="2: adb" time="0.009394">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/Sdk/platform-tools/adb start-server" time="0.115135">
+      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/Sdk/platform-tools/adb start-server" time="0.114876">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/Sdk/emulator/emulator -list-avds" time="0.019972">
+      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/Sdk/emulator/emulator -list-avds" time="0.025692">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: /Users/duncwa/Library/Android/Sdk/emulator/emulator -avd Pixel_4_XL_API_29 " time="86.600569">
+      <testcase classname="fastlane.lanes" name="5: /Users/duncwa/Library/Android/Sdk/emulator/emulator -avd Pixel_4_XL_API_29 " time="178.780625">
         
       </testcase>
     
