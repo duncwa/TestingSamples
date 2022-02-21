@@ -63,14 +63,6 @@ platform :android do
     )
   end
 
-  desc "Run emulator instrumentation tests for TestingSamples Android App"
-  lane :test_aos_qe do
-    setup_emulator
-    gradle(
-      task: "connectedAndroidTest",
-      project_dir: 'ui/espresso/BasicSample'
-    )
-  end
 
   desc "Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA"
   lane :test_aos_qe_jira do
@@ -82,31 +74,51 @@ platform :android do
     # sh 'curl -H "Content-Type: multipart/form-data" -u duncwa:"password" -F "file=@build/reports/junit.xml" http://jira-prod.local:8081/rest/raven/2.0/import/execution/junit?projectKey=GHFLS-2'
   end
 
-  desc "Startup the emulator"
-  lane :setup_emulator do
-    android_home = ENV['ANDROID_HOME']
-    device = ENV['DEVICE']
-    adb(
-      serial: device,
-      command: "kill-server"
+  desc "Run emulator instrumentation tests for TestingSamples Android App"
+  lane :test_aos_qe do
+    automated_test_emulator_run(
+      AVD_setup_path: "fastlane/avd_json/AVD_setup.json",
+      gradle_task: "ui/espresso/BasicSample:connectedAndroidTest",
     )
-    puts android_home
-    sh("#{android_home}/platform-tools/adb start-server")
-    sh("#{android_home}/emulator/emulator", "-list-avds")
-    sh("#{android_home}/emulator/emulator -avd #{device} ")
   end
 
-  desc "Shutdown the emulator"
-  lane :shutdown_emulator do
-    android_home = ENV['ANDROID_HOME']
-    device = ENV['DEVICE']
-    adb(
-      serial: device,
-      command: "kill-server"
-    )
-    # sh("#{android_home}/emulator/emulator", "-list-avds")
-    # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
-  end
+
+
+
+  # desc "Run emulator instrumentation tests for TestingSamples Android App"
+  # lane :test_aos_qe do
+  #   setup_emulator
+  #   gradle(
+  #     task: "connectedAndroidTest",
+  #     project_dir: 'ui/espresso/BasicSample'
+  #   )
+  # end
+  #
+  # desc "Startup the emulator"
+  # lane :setup_emulator do
+  #   android_home = ENV['ANDROID_HOME']
+  #   device = ENV['DEVICE']
+  #   adb(
+  #     serial: device,
+  #     command: "kill-server"
+  #   )
+  #   puts android_home
+  #   sh("#{android_home}/platform-tools/adb start-server")
+  #   sh("#{android_home}/emulator/emulator", "-list-avds")
+  #   sh("#{android_home}/emulator/emulator -avd #{device} ")
+  # end
+  #
+  # desc "Shutdown the emulator"
+  # lane :shutdown_emulator do
+  #   android_home = ENV['ANDROID_HOME']
+  #   device = ENV['DEVICE']
+  #   adb(
+  #     serial: device,
+  #     command: "kill-server"
+  #   )
+  #   # sh("#{android_home}/emulator/emulator", "-list-avds")
+  #   # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
+  # end
 
   ##################################################
   #  AOS INS, Screenshots and Danger Lanes

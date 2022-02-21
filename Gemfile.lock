@@ -301,7 +301,7 @@ GEM
     os (1.1.4)
     ox (2.14.9)
     parallel (1.21.0)
-    parser (3.1.0.0)
+    parser (3.1.1.0)
       ast (~> 2.4.1)
     plist (3.6.0)
     pry (0.14.1)
