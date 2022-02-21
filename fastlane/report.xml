@@ -5,32 +5,14 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00047">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000535">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android setup_emulator lane" time="0.000403">
+      <testcase classname="fastlane.lanes" name="1: automated_test_emulator_run" time="0.174904">
         
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: adb" time="0.009394">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/Sdk/platform-tools/adb start-server" time="0.114876">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/Sdk/emulator/emulator -list-avds" time="0.025692">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: /Users/duncwa/Library/Android/Sdk/emulator/emulator -avd Pixel_4_XL_API_29 " time="178.780625">
+          <failure message="/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/actions/actions_helper.rb:67:in `execute_action'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:255:in `block in execute_action'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:229:in `chdir'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:229:in `execute_action'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'&#10;Fastfile:79:in `block (2 levels) in parsing_binding'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/lane.rb:33:in `call'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:49:in `block in execute'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:45:in `chdir'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:45:in `execute'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/lane_manager.rb:47:in `cruise_lane'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/command_line_handler.rb:36:in `handle'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/commands_generator.rb:109:in `block (2 levels) in run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/commands_generator.rb:353:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/commands_generator.rb:42:in `start'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/cli_tools_distributor.rb:122:in `take_off'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/bin/fastlane:23:in `&lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/fastlane:23:in `load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/fastlane:23:in `&lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli/exec.rb:58:in `load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli/exec.rb:58:in `kernel_load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli/exec.rb:23:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli.rb:479:in `exec'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor.rb:392:in `dispatch'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli.rb:31:in `dispatch'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor/base.rb:485:in `start'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli.rb:25:in `start'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/exe/bundle:49:in `block in &lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/friendly_errors.rb:103:in `with_friendly_errors'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/exe/bundle:37:in `&lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/bundle:23:in `load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/bundle:23:in `&lt;main&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/ruby_executable_hooks:22:in `eval'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/ruby_executable_hooks:22:in `&lt;main&gt;'&#10;&#10;Exit status of command '/Users/duncwa/Library/Android/Sdk/tools/bin/avdmanager list avd' was 1 instead of 0.&#10;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: javax/xml/bind/annotation/XmlSchema&#10;	at com.android.repository.api.SchemaModule$SchemaModuleVersion.&lt;init&gt;(SchemaModule.java:156)&#10;	at com.android.repository.api.SchemaModule.&lt;init&gt;(SchemaModule.java:75)&#10;	at com.android.sdklib.repository.AndroidSdkHandler.&lt;clinit&gt;(AndroidSdkHandler.java:81)&#10;	at com.android.sdklib.tool.AvdManagerCli.run(AvdManagerCli.java:213)&#10;	at com.android.sdklib.tool.AvdManagerCli.main(AvdManagerCli.java:200)&#10;Caused by: java.lang.ClassNotFoundException: javax.xml.bind.annotation.XmlSchema&#10;	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:602)&#10;	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)&#10;	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)&#10;	... 5 more&#10;" />
         
       </testcase>
     

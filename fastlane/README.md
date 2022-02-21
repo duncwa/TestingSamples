@@ -47,14 +47,6 @@ Run Release Build for TestingSamples Android App
 
 Run unit tests for TestingSamples Android App
 
-### android test_aos_qe
-
-```sh
-[bundle exec] fastlane android test_aos_qe
-```
-
-Run emulator instrumentation tests for TestingSamples Android App
-
 ### android test_aos_qe_jira
 
 ```sh
@@ -63,26 +55,18 @@ Run emulator instrumentation tests for TestingSamples Android App
 
 Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA
 
-### android setup_emulator
+### android test_aos_qe
 
 ```sh
-[bundle exec] fastlane android setup_emulator
+[bundle exec] fastlane android test_aos_qe
 ```
 
-Startup the emulator
+Run emulator instrumentation tests for TestingSamples Android App
 
-### android shutdown_emulator
-
-```sh
-[bundle exec] fastlane android shutdown_emulator
-```
-
-Shutdown the emulator
-
-### android run_aos_ins
+### android bex_aos_ins
 
 ```sh
-[bundle exec] fastlane android run_aos_ins
+[bundle exec] fastlane android bex_aos_ins
 ```
 
 Perform Inspection of Artifacts using Bulkextractor
