@@ -113,7 +113,7 @@ platform :android do
   ##################################################
 
   desc "Perform Inspection of Artifacts using Bulkextractor"
-  lane :run_aos_ins do
+  lane :bex_aos_ins do
     generate_rls_apk
     ## Call inspection bulkextractor on *.apk/abb and dSYMS file
     sh 'echo $PWD'
@@ -205,7 +205,7 @@ platform :android do
       default_payloads: []
     )
   end
-  
+
   desc "Run Slack reporting for QE"
   lane :post_qe_aos_slack_message do |options|
     build_url = ENV["BUILD_URL"]
