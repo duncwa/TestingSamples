@@ -15,13 +15,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android generate_rls_apk
+### android appcenter_upload_rls
 
 ```sh
-[bundle exec] fastlane android generate_rls_apk
+[bundle exec] fastlane android appcenter_upload_rls
 ```
 
-Run Release Build for TestingSamples Android App
+Upload apk and mapping results to AppCenter
 
 ### android generate_dev_apk
 
@@ -29,7 +29,15 @@ Run Release Build for TestingSamples Android App
 [bundle exec] fastlane android generate_dev_apk
 ```
 
+Run Develop Build for TestingSamples Android App
 
+### android generate_rls_apk
+
+```sh
+[bundle exec] fastlane android generate_rls_apk
+```
+
+Run Release Build for TestingSamples Android App
 
 ### android test_aos_pra
 
@@ -103,21 +111,13 @@ Run Danger for PRA Commit to Repo Comments
 
 Run Danger for MBP PRA Commit to Repo Comments
 
-### android slack_test
+### android post_dev_slack_message
 
 ```sh
-[bundle exec] fastlane android slack_test
+[bundle exec] fastlane android post_dev_slack_message
 ```
 
-Run Slack Testing
-
-### android slack_test_local
-
-```sh
-[bundle exec] fastlane android slack_test_local
-```
-
-Run Slack Testing
+Run Slack reporting for DEV
 
 ### android post_pra_slack_message
 
@@ -127,13 +127,13 @@ Run Slack Testing
 
 Run Slack reporting for PRA
 
-### android post_dev_slack_message
+### android post_qe_aos_slack_message
 
 ```sh
-[bundle exec] fastlane android post_dev_slack_message
+[bundle exec] fastlane android post_qe_aos_slack_message
 ```
 
-Run Slack reporting for DEV
+Run Slack reporting for QE
 
 ### android post_rls_slack_message
 
@@ -143,13 +143,13 @@ Run Slack reporting for DEV
 
 Run Slack reporting for RLS
 
-### android post_qe_aos_slack_message
+### android slack_test
 
 ```sh
-[bundle exec] fastlane android post_qe_aos_slack_message
+[bundle exec] fastlane android slack_test
 ```
 
-Run Slack reporting for QE
+Run Slack Testing
 
 ----
 
