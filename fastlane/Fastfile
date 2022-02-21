@@ -41,7 +41,7 @@ platform :android do
   lane :test_aos_qe do
     setup_emulator
     gradle(
-      task: "connectedDebugAndroidTest",
+      task: "connectedAndroidTest",
       project_dir: 'ui/espresso/BasicSample'
     )
   end

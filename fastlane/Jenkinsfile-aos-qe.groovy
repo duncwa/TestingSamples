@@ -20,6 +20,7 @@ pipeline {
       GITLAB_USERNAME = "${env.GITLAB_CREDS_USR}"
       GITLAB_PASSWORD = "${env.GITLAB_CREDS_PSW}"
       BUILD_NUM = "${env.BUILD_ID}"
+      SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
     }
 
