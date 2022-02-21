@@ -16,9 +16,6 @@ pipeline {
     }
 
     environment {
-      GITLAB_CREDS = credentials("duncwa-gitlab-user")
-      GITLAB_USERNAME = "${env.GITLAB_CREDS_USR}"
-      GITLAB_PASSWORD = "${env.GITLAB_CREDS_PSW}"
       BUILD_NUM = "${env.BUILD_ID}"
       SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
@@ -34,7 +31,7 @@ pipeline {
               sh 'printenv'
           }
       }
-      stage('instrumentation Tests') {
+      stage('Instrumentation Tests') {
           steps {
               echo 'Test QE'
               sh 'bundle exec fastlane test_aos_qe'
