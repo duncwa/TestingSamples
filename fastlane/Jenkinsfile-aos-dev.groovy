@@ -18,7 +18,8 @@ pipeline {
     environment {
       ghprbPullId = "${env.PULL_REQ_NUM}"
       BUILD_NUM = "${env.BUILD_ID}"
-      SLACK = "#cs-ghfollowers-jenkins"
+      SLACK_URL = credentials("s.slackwebhookurl")
+      SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
     }
 
     stages {

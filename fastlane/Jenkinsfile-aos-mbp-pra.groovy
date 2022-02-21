@@ -25,6 +25,7 @@ pipeline {
     PR_NUM = "${env.CHANGE_ID}"
     PR_URL = "https://github.com/duncwa/TestingSamples/pull/${env.CHANGE_ID}"
     GIT_URL_1 = "https://github.com/duncwa/TestingSamples"
+    SLACK_URL = credentials("s.slackwebhookurl")
     SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
   }
 

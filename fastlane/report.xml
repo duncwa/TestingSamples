@@ -5,34 +5,32 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000456">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000331">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android generate_rls_apk lane" time="0.000176">
+      <testcase classname="fastlane.lanes" name="1: Switch to android setup_emulator lane" time="0.000179">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: assembleRelease" time="1.509601">
+      <testcase classname="fastlane.lanes" name="2: adb" time="0.010481">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: echo $PWD" time="0.006429">
+      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/Sdk/platform-tools/adb start-server" time="0.115135">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: echo &quot;Running Bulkextractor inspection&quot;" time="0.007121">
+      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/Sdk/emulator/emulator -list-avds" time="0.019972">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: bulk_extractor -o ../ui/espresso/BasicSample/app/build/outputs/apk/ins -R ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk" time="0.002949">
-        
-          <failure message="/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/actions/actions_helper.rb:67:in `execute_action'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/fast_file.rb:222:in `sh'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/fast_file.rb:216:in `sh'&#10;Fastfile:91:in `block (2 levels) in parsing_binding'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/lane.rb:33:in `call'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:49:in `block in execute'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:45:in `chdir'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/runner.rb:45:in `execute'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/lane_manager.rb:47:in `cruise_lane'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/command_line_handler.rb:36:in `handle'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/commands_generator.rb:109:in `block (2 levels) in run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/commands_generator.rb:353:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/commands_generator.rb:42:in `start'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/fastlane/lib/fastlane/cli_tools_distributor.rb:122:in `take_off'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/fastlane-2.204.3/bin/fastlane:23:in `&lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/fastlane:23:in `load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/fastlane:23:in `&lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli/exec.rb:58:in `load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli/exec.rb:58:in `kernel_load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli/exec.rb:23:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli.rb:479:in `exec'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor.rb:392:in `dispatch'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli.rb:31:in `dispatch'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/vendor/thor/lib/thor/base.rb:485:in `start'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/cli.rb:25:in `start'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/exe/bundle:49:in `block in &lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/lib/bundler/friendly_errors.rb:103:in `with_friendly_errors'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/gems/bundler-2.2.33/exe/bundle:37:in `&lt;top (required)&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/bundle:23:in `load'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/bundle:23:in `&lt;main&gt;'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/ruby_executable_hooks:22:in `eval'&#10;/Users/duncwa/.rvm/gems/ruby-2.7.2/bin/ruby_executable_hooks:22:in `&lt;main&gt;'&#10;&#10;No such file or directory - bulk_extractor" />
+      <testcase classname="fastlane.lanes" name="5: /Users/duncwa/Library/Android/Sdk/emulator/emulator -avd Pixel_4_XL_API_29 " time="86.600569">
         
       </testcase>
     
