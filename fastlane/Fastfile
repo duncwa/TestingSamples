@@ -90,7 +90,7 @@ platform :android do
   desc "Run emulator instrumentation tests for TestingSamples Android App"
   lane :test_aos_qe do
     #sh("ui/espresso/BasicSample/./gradlew connectedAndroidTest")
-    # sleep 90
+    sleep 90
     gradle(
       task: "connectedAndroidTest",
       project_dir: 'ui/espresso/BasicSample'
