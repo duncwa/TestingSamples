@@ -108,7 +108,7 @@ platform :android do
     sh("#{android_home}/platform-tools/adb start-server")
     sh("#{android_home}/emulator/emulator", "-list-avds")
     # sh("#{android_home}/emulator/emulator -avd #{device} -no-boot-anim -verbose -gpu auto &&")
-    sh("#{android_home}/emulator/emulator -avd Nexus_5X_API_31 -wipe-data -no-snapshot -no-boot-anim -verbose -gpu auto -quit-after-boot 270")
+    sh("#{android_home}/emulator/emulator -avd Nexus_5X_API_31 -wipe-data -no-snapshot -no-boot-anim -verbose -quit-after-boot 270")
   end
 
   desc "Shutdown the emulator"
