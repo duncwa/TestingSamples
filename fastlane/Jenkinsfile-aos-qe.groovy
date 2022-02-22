@@ -63,17 +63,17 @@ pipeline {
 
       success {
         sh "echo 'Build Successful' "
-        sh "bundle exec fastlane post_qe_aos_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
+        sh "bundle exec fastlane post_qe_aos_con_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
       unstable {
         sh "echo 'Build Unstable' "
-        sh "bundle exec fastlane post_qe_aos_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
+        sh "bundle exec fastlane post_qe_aos_con_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
       failure {
         sh "echo 'Build Failed' "
-        sh "bundle exec fastlane post_qe_aos_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
+        sh "bundle exec fastlane post_qe_aos_con_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
     }
