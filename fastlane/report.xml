@@ -5,27 +5,32 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00036">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000578">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: adb" time="0.009709">
+      <testcase classname="fastlane.lanes" name="1: adb" time="0.009766">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: /Users/duncwa/Library/Android/sdk/platform-tools/adb start-server" time="0.113309">
+      <testcase classname="fastlane.lanes" name="2: /Users/duncwa/Library/Android/sdk/platform-tools/adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill;done;sleep 5" time="5.123876">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/sdk/emulator/emulator -list-avds" time="0.020223">
+      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/sdk/platform-tools/adb start-server" time="0.007985">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/sdk/emulator/emulator -avd Pixel_4_XL_API_30 -wipe-data -no-snapshot -no-boot-anim -verbose &amp;&amp; echo ." time="908.336991">
+      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/sdk/emulator/emulator -list-avds" time="0.020829">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: /Users/duncwa/Library/Android/sdk/emulator/emulator -avd Pixel_4_XL_API_30 -memory 4096 -wipe-data -no-snapshot -no-boot-anim -verbose -gpu auto" time="138.71399">
         
       </testcase>
     
