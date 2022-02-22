@@ -24,6 +24,22 @@ platform :android do
       owner_type: "organization", # Default is user - set to organization for appcenter organizations
       app_name: ENV["APPCENTER_RLS_APP_NAME"],
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
+      file: "ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-signed.apk",
+      dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
+      build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
+      version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
+      app_platform: "android",
+      app_os: "android"
+    )
+  end
+
+  lane :appcenter_upload_dev do
+    appcenter_upload(
+      api_token: ENV["APPCENTER_TOKEN_DLO"],
+      owner_name: ENV["APPCENTER_ORG"],
+      owner_type: "organization", # Default is user - set to organization for appcenter organizations
+      app_name: ENV["APPCENTER_RLS_APP_NAME"],
+      notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
       file: "ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk",
       dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
       build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
@@ -120,7 +136,7 @@ platform :android do
     android_home = ENV['ANDROID_HOME']
     device = ENV['DEVICE']
     sh("#{android_home}/emulator/emulator", "-list-avds")
-    sh("#{android_home}/platform-tools/adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill;done")
+    sh("#{android_home}/platform-tools/adb devices | grep emulator | cut -f1 | while read line; do #{android_home}/platform-tools/adb -s $line emu kill;done")
     adb(
       serial: device,
       command: "kill-server"
