@@ -5,12 +5,27 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000413">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00036">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: connectedAndroidTest" time="9.813592">
+      <testcase classname="fastlane.lanes" name="1: adb" time="0.009709">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: /Users/duncwa/Library/Android/sdk/platform-tools/adb start-server" time="0.113309">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: /Users/duncwa/Library/Android/sdk/emulator/emulator -list-avds" time="0.020223">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: /Users/duncwa/Library/Android/sdk/emulator/emulator -avd Pixel_4_XL_API_30 -wipe-data -no-snapshot -no-boot-anim -verbose &amp;&amp; echo ." time="908.336991">
         
       </testcase>
     
