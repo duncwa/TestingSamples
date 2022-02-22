@@ -141,7 +141,15 @@ Run Slack reporting for PRA
 [bundle exec] fastlane android post_qe_aos_slack_message
 ```
 
-Run Slack reporting for QE
+Run Slack reporting for QE TestDebug
+
+### android post_qe_aos_con_slack_message
+
+```sh
+[bundle exec] fastlane android post_qe_aos_con_slack_message
+```
+
+Run Slack reporting for QE Connected
 
 ### android post_rls_slack_message
 
