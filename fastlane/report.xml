@@ -5,22 +5,12 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000452">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000413">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android setup_emulator lane" time="0.000175">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: adb" time="0.009223">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: emulator -avd Nexus_5X_API_31 -memory 4096 -wipe-data -no-snapshot -no-boot-anim -verbose -gpu auto &amp;&amp; echo" time="746.449458">
+      <testcase classname="fastlane.lanes" name="1: connectedAndroidTest" time="9.813592">
         
       </testcase>
     
