@@ -124,7 +124,7 @@ platform :android do
       command: "kill-server"
     )
     sh("#{android_home}/emulator/emulator", "-list-avds")
-    sh("#{android_home}/emulator/emulator", "-avd", "#{device}")
+    #sh("#{android_home}/emulator/emulator", "-avd", "#{device}")
     sh("#{android_home}/platform-tools/adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill;done")
   end
 
