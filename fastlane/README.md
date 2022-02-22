@@ -55,6 +55,14 @@ Run unit tests for TestingSamples Android App
 
 Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA
 
+### android test_aos_instrumentation
+
+```sh
+[bundle exec] fastlane android test_aos_instrumentation
+```
+
+Run emulator instrumentation tests for TestingSamples Android App
+
 ### android test_aos_qe
 
 ```sh
@@ -62,6 +70,22 @@ Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA
 ```
 
 Run emulator instrumentation tests for TestingSamples Android App
+
+### android setup_emulator
+
+```sh
+[bundle exec] fastlane android setup_emulator
+```
+
+Startup the emulator
+
+### android shutdown_emulator
+
+```sh
+[bundle exec] fastlane android shutdown_emulator
+```
+
+Shutdown the emulator
 
 ### android bex_aos_ins
 
