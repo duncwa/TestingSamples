@@ -32,13 +32,14 @@ pipeline {
               sh 'rvm list'
           }
       }
-      stage('Build and Upload IPA') {
+      stage('Build and Upload APK') {
           steps {
-              echo 'Generate IPA'
-              sh 'bundle exec fastlane generate_dev_ipa'
+              echo 'Generate APK'
+              sh 'bundle exec fastlane generate_dev_apk'
+              sh 'bundle exec fastlane appcenter_upload_dev'
           }
           post {
-            always { stash includes: "fastlane/*_output/**/*", name: "generate_dev_ipa", allowEmpty: true }
+            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "generate_dev_apk", allowEmpty: true }
           }
       }
     }
@@ -46,25 +47,25 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "generate_dev_ipa" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "generate_dev_apk" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
-        archiveArtifacts artifacts: "fastlane/*_output/**/*", fingerprint: true
+        archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
 
       success {
-        sh "echo 'IPA Successful' "
-        slackSend channel: SLACK, message: "IPA Generate Successful - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+        sh "echo 'APK Successful' "
+        slackSend channel: SLACK, message: "APK Generate Successful - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
       }
 
       unstable {
-        sh "echo 'IPA Unsuccessful' "
-        slackSend channel: SLACK,  message: "IPA Generate Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+        sh "echo 'APK Unsuccessful' "
+        slackSend channel: SLACK,  message: "APK Generate Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
 
       }
 
       failure {
-        sh "echo 'IPA Failed' "
-        slackSend channel: SLACK,  message: "IPA Generate Failed- ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+        sh "echo 'APK Failed' "
+        slackSend channel: SLACK,  message: "APK Generate Failed- ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
 
       }
 
