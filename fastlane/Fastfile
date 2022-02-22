@@ -95,6 +95,7 @@ platform :android do
       task: "connectedAndroidTest",
       project_dir: 'ui/espresso/BasicSample'
     )
+    shutdown_emulator
   end
 
   desc "Startup the emulator"
@@ -109,9 +110,9 @@ platform :android do
     sh("#{android_home}/platform-tools/adb start-server")
     sh("#{android_home}/emulator/emulator -list-avds")
     #sh("#{android_home}/emulator/emulator -avd #{device} -no-boot-anim -verbose -quit-after-boot 270")
-    #sh("#{android_home}/emulator/emulator -avd #{device} -memory 4096 -wipe-data -no-snapshot -no-boot-anim -verbose -gpu auto -quit-after-boot 270")
-    sh("#{android_home}/emulator/emulator -avd #{device} -wipe-data -no-snapshot -no-boot-anim -verbose")
-
+    sh("#{android_home}/emulator/emulator -avd #{device} -memory 4096 -wipe-data -no-snapshot -no-boot-anim -verbose -gpu auto")
+    #sh("#{android_home}/emulator/emulator -avd #{device} -wipe-data -no-snapshot -no-boot-anim -verbose")
+    #sh("#{android_home}/platform-tools/adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill;done")
   end
 
   desc "Shutdown the emulator"
@@ -122,8 +123,9 @@ platform :android do
       serial: device,
       command: "kill-server"
     )
-    # sh("#{android_home}/emulator/emulator", "-list-avds")
-    # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
+    sh("#{android_home}/emulator/emulator", "-list-avds")
+    sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
+    sh("#{android_home}/platform-tools/adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill;done")
   end
 
   ##################################################
