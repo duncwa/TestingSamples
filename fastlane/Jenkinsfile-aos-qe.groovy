@@ -8,7 +8,6 @@
 
 pipeline {
     agent { label "fastlane_pra" }
-    tools { "JDK-11-0-2" }
 
     options {
       ansiColor("xterm")
@@ -32,14 +31,25 @@ pipeline {
               sh 'printenv'
           }
       }
-      stage('Instrumentation Tests') {
-          steps {
+
+      stage("Parallel") {
+        parallel {
+          stage('Emulator Startup') {
+            steps {
+              echo 'Emulator Initializing'
+              sh 'bundle exec fastlane setup_emulator'
+            }
+          }
+          stage('Instrumentation Tests') {
+            steps {
               echo 'Test QE'
               sh 'bundle exec fastlane test_aos_qe'
+            }
+            post {
+              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe", allowEmpty: true }
+            }
           }
-          post {
-            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe", allowEmpty: true }
-          }
+        }
       }
     }
 

@@ -75,50 +75,53 @@ platform :android do
   end
 
   desc "Run emulator instrumentation tests for TestingSamples Android App"
-  lane :test_aos_qe do
-    automated_test_emulator_run(
+  lane :test_aos_instrumentation do
+    gradle_task(
       AVD_setup_path: "fastlane/avd_json/AVD_setup.json",
       gradle_task: "ui/espresso/BasicSample:connectedAndroidTest",
+      task: "testDebugUnitTest",
+      project_dir: 'ui/espresso/BasicSample'
     )
   end
 
 
 
 
-  # desc "Run emulator instrumentation tests for TestingSamples Android App"
-  # lane :test_aos_qe do
-  #   setup_emulator
-  #   gradle(
-  #     task: "connectedAndroidTest",
-  #     project_dir: 'ui/espresso/BasicSample'
-  #   )
-  # end
-  #
-  # desc "Startup the emulator"
-  # lane :setup_emulator do
-  #   android_home = ENV['ANDROID_HOME']
-  #   device = ENV['DEVICE']
-  #   adb(
-  #     serial: device,
-  #     command: "kill-server"
-  #   )
-  #   puts android_home
-  #   sh("#{android_home}/platform-tools/adb start-server")
-  #   sh("#{android_home}/emulator/emulator", "-list-avds")
-  #   sh("#{android_home}/emulator/emulator -avd #{device} ")
-  # end
-  #
-  # desc "Shutdown the emulator"
-  # lane :shutdown_emulator do
-  #   android_home = ENV['ANDROID_HOME']
-  #   device = ENV['DEVICE']
-  #   adb(
-  #     serial: device,
-  #     command: "kill-server"
-  #   )
-  #   # sh("#{android_home}/emulator/emulator", "-list-avds")
-  #   # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
-  # end
+  desc "Run emulator instrumentation tests for TestingSamples Android App"
+  lane :test_aos_qe do
+    sleep 60
+    gradle(
+      task: "connectedAndroidTest",
+      project_dir: 'ui/espresso/BasicSample'
+    )
+  end
+
+  desc "Startup the emulator"
+  lane :setup_emulator do
+    android_home = ENV['ANDROID_HOME']
+    device = ENV['DEVICE']
+    adb(
+      serial: device,
+      command: "kill-server"
+    )
+    puts android_home
+    sh("#{android_home}/platform-tools/adb start-server")
+    sh("#{android_home}/emulator/emulator", "-list-avds")
+    # sh("#{android_home}/emulator/emulator -avd #{device} -no-boot-anim -verbose -gpu auto &&")
+    sh("emulator -avd Nexus_5X_API_31 -memory 4096 -wipe-data -no-snapshot -no-boot-anim -verbose -gpu auto -quit-after-boot 180")
+  end
+
+  desc "Shutdown the emulator"
+  lane :shutdown_emulator do
+    android_home = ENV['ANDROID_HOME']
+    device = ENV['DEVICE']
+    adb(
+      serial: device,
+      command: "kill-server"
+    )
+    # sh("#{android_home}/emulator/emulator", "-list-avds")
+    # sh("#{android_home}/emulator/emulator", "-avd", "Pixel_4_XL_API_29")
+  end
 
   ##################################################
   #  AOS INS, Screenshots and Danger Lanes
