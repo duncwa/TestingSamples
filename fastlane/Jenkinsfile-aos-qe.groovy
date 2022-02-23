@@ -36,13 +36,13 @@ pipeline {
 
       stage("Parallel") {
         parallel {
-          stage("Unit Tests") {
+          stage("Unit Tests Fragment Scenario Sample") {
             steps {
-              echo "Test QE ${project_dir}"
+              echo "Test QE Fragment Scenario Sample"
               sh 'bundle exec fastlane test_aos_qe_unit'
             }
             post {
-              always { stash includes: "${project_dir}/app/build/**/*", name: "test_aos_qe", allowEmpty: true }
+              always { stash includes: "ui/espresso/FragmentScenarioSample/app/build/**/*", name: "test_aos_qe_fs", allowEmpty: true }
             }
           }
           stage('Unit Tests BasicSample') {
@@ -51,7 +51,7 @@ pipeline {
               sh 'bundle exec fastlane test_aos_qe_unit'
             }
             post {
-              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_basic", allowEmpty: true }
+              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_bs", allowEmpty: true }
             }
           }
         }
@@ -61,11 +61,11 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "test_aos_qe" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
-          try { unstash "test_aos_qe_basic" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "test_aos_qe_fs" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "test_aos_qe_bs" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
 
         }
-        archiveArtifacts artifacts: "ui/espresso/${project_dir}/app/build/**/*", fingerprint: true
+        archiveArtifacts artifacts: "ui/espresso/FragmentScenarioSample/app/build/**/*", fingerprint: true
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
 
