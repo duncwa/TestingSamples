@@ -46,11 +46,13 @@ pipeline {
             steps {
               echo 'Test QE'
               sh 'bundle exec fastlane test_aos_qe_instrumentation'
+              sh 'bundle exec fastlane test_aos_coverage'
             }
             post {
               always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_instrumentation", allowEmpty: true }
             }
           }
+
         }
       }
     }
