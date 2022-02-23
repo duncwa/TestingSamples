@@ -19,9 +19,8 @@ bazel-*
 
 # Fastlane and Build
 Fastlane/*-output
-/build
+build
 /captures
 .externalNativeBuild
 .cxx
 /app/secrets
-/*/build

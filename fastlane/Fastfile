@@ -86,33 +86,40 @@ platform :android do
       task: "connectedAndroidTest",
       project_dir: '.'
     )
-    # sh './gradlew testDebugUnitTest | xcpretty -r junit'
-    # sh 'curl -H "Content-Type: multipart/form-data" -u duncwa:"password" -F "file=@build/reports/junit.xml" http://jira-prod.local:8081/rest/raven/2.0/import/execution/junit?projectKey=GHFLS-2'
+    sh './gradlew testDebugUnitTest | xcpretty -r junit'
+    sh 'curl -H "Content-Type: multipart/form-data" -u duncwa:"password" -F "file=@build/reports/junit.xml" http://jira-prod.local:8081/rest/raven/2.0/import/execution/junit?projectKey=GHFLS-2'
   end
 
   desc "Run emulator instrumentation tests for TestingSamples Android App"
   lane :test_aos_instrumentation do
     gradle_task(
       AVD_setup_path: "fastlane/avd_json/AVD_setup.json",
-      gradle_task: "ui/espresso/BasicSample:connectedAndroidTest",
+      gradle_task: "ui/espresso/#{project_dir}:connectedAndroidTest",
       task: "testDebugUnitTest",
-      project_dir: 'ui/espresso/BasicSample'
+      project_dir: 'ui/espresso/#{project_dir}'
     )
   end
 
-
-
-
   desc "Run emulator instrumentation tests for TestingSamples Android App"
-  lane :test_aos_qe do
-    #sh("ui/espresso/BasicSample/./gradlew connectedAndroidTest")
+  lane :test_aos_qe_instrumentation do
     test_task = ENV['TEST_TASK']
+    project_dir = ENV['PROJECT_DIR']
     sleep 90
     gradle(
       task: test_task,
-      project_dir: 'ui/espresso/BasicSample'
+      project_dir: project_dir
     )
     shutdown_emulator
+  end
+
+  desc "Run emulator unit tests for TestingSamples Android App"
+  lane :test_aos_qe_unit do
+    test_task = ENV['TEST_TASK']
+    project_dir = ENV['PROJECT_DIR']
+    gradle(
+      task: test_task,
+      project_dir: project_dir
+    )
   end
 
   desc "Startup the emulator"
@@ -253,11 +260,12 @@ platform :android do
     status = options[:status]
     android_project = ENV["ANDROID_PROJECT"]
     test_task = ENV["TEST_TASK"]
+    project_dir = ENV['PROJECT_DIR']
     # result = status == "SUCCESS" ? " 🚀 finished in" : " 💣💥failed after "
     # message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
 
     # XML parsing
-    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.example.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
+    output_xml = "#{pwd}/ui/espresso/#{project_dir}/app/build/test-results/testDebugUnitTest/TEST-com.example.android.testing.espresso.#{project_dir}.ChangeTextBehaviorLocalTest.xml"
     document = File.open(output_xml) { |f| Nokogiri::XML(f) }
     # document = Nokogiri::XML(File.open(output_xml))
     puts "Document : #{document}"
@@ -313,7 +321,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`✅  Android Task: #{test_task}`*",
         "*`✅  Android Project Build: #{android_project}`*",
-        "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
+        "`<#{build_url}artifact/ui/espresso/#{project_dir}/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     else
       begin
@@ -333,7 +341,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`#{emoji.call(qe_build_succeeded)} Android Task: #{test_task}`*",
         "*`#{emoji.call(qe_build_succeeded)} Android Project Build: #{android_project}`*",
-        "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
+        "`<#{build_url}artifact/ui/espresso/#{project_dir}/app/build/reports/tests/testDebugUnitTest/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     end
 
@@ -362,7 +370,7 @@ platform :android do
 
     # XML parsing
     #output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.example.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
-    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/outputs/androidTest-results/connected/TEST-Pixel_4_XL_API_30(AVD)\ -\ 11-app-.xml"
+    output_xml = "#{pwd}/ui/espresso/#{project_dir}/app/build/outputs/androidTest-results/connected/TEST-Pixel_4_XL_API_30(AVD)\ -\ 11-app-.xml"
     document = File.open(output_xml) { |f| Nokogiri::XML(f) }
     # document = Nokogiri::XML(File.open(output_xml))
     puts "Document : #{document}"
@@ -418,7 +426,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`✅  Android Task: #{test_task}`*",
         "*`✅  Android Project Build: #{android_project}`*",
-        "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/androidTests/connected/index.html|* Click to see last job test results*>`"
+        "`<#{build_url}artifact/ui/espresso/#{project_dir}/app/build/reports/androidTests/connected/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     else
       begin
@@ -438,7 +446,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`#{emoji.call(qe_build_succeeded)} Android Task: #{test_task}`*",
         "*`#{emoji.call(qe_build_succeeded)} Android Project Build: #{android_project}`*",
-        "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/androidTests/connected/index.html|* Click to see last job test results*>`"
+        "`<#{build_url}artifact/ui/espresso/#{project_dir}/app/build/reports/androidTests/connected/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     end
 

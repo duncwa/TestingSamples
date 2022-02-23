@@ -19,6 +19,8 @@ pipeline {
       BUILD_NUM = "${env.BUILD_ID}"
       SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
+      TEST_TASK = ENV['TEST_TASK']
+      PROJECT_DIR = ENV['PROJECT_DIR']
     }
 
     stages {
@@ -43,10 +45,10 @@ pipeline {
           stage('Instrumentation Tests') {
             steps {
               echo 'Test QE'
-              sh 'bundle exec fastlane test_aos_qe'
+              sh 'bundle exec fastlane test_aos_qe_instrumentation'
             }
             post {
-              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe", allowEmpty: true }
+              always { stash includes: "ui/espresso/${project_dir}/app/build/**/*", name: "test_aos_qe_instrumentation", allowEmpty: true }
             }
           }
         }
@@ -56,9 +58,9 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "test_aos_qe" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "test_aos_qe_instrumentation" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
-        archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
+        archiveArtifacts artifacts: "ui/espresso/${project_dir}/app/build/**/*", fingerprint: true
       }
 
       success {
