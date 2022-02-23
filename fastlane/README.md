@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Upload apk and mapping results to AppCenter
 
+### android appcenter_upload_dev
+
+```sh
+[bundle exec] fastlane android appcenter_upload_dev
+```
+
+
+
 ### android generate_dev_apk
 
 ```sh
