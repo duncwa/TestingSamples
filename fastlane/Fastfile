@@ -96,7 +96,7 @@ platform :android do
       AVD_setup_path: "fastlane/avd_json/AVD_setup.json",
       gradle_task: "ui/espresso/#{project_dir}:connectedAndroidTest",
       task: "testDebugUnitTest",
-      project_dir: 'ui/espresso/#{project_dir}'
+      project_dir: "ui/espresso/#{project_dir}"
     )
   end
 
