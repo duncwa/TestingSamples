@@ -38,7 +38,7 @@ platform :android do
       api_token: ENV["APPCENTER_TOKEN_DLO"],
       owner_name: ENV["APPCENTER_ORG"],
       owner_type: "organization", # Default is user - set to organization for appcenter organizations
-      app_name: ENV["APPCENTER_RLS_APP_NAME"],
+      app_name: ENV["APPCENTER_DEV_APP_NAME"],
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
       file: "ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk",
       dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
