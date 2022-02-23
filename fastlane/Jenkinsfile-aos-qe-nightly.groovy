@@ -19,8 +19,8 @@ pipeline {
       BUILD_NUM = "${env.BUILD_ID}"
       SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
-      TEST_TASK = ENV['TEST_TASK']
-      PROJECT_DIR = ENV['PROJECT_DIR']
+      TEST_TASK = "${env.TEST_TASK}"
+      PROJECT_DIR = "${env.PROJECT_DIR}"
     }
 
     stages {
