@@ -36,7 +36,7 @@ pipeline {
 
       stage("Parallel") {
         parallel {
-          stage("Unit Tests ${project_dir}") {
+          stage("Unit Tests") {
             steps {
               echo "Test QE ${project_dir}"
               sh 'bundle exec fastlane test_aos_qe_unit'
