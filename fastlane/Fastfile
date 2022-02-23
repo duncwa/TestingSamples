@@ -106,9 +106,10 @@ platform :android do
   desc "Run emulator instrumentation tests for TestingSamples Android App"
   lane :test_aos_qe do
     #sh("ui/espresso/BasicSample/./gradlew connectedAndroidTest")
+    test_task = ENV['TEST_TASK']
     sleep 90
     gradle(
-      task: "connectedAndroidTest",
+      task: test_task,
       project_dir: 'ui/espresso/BasicSample'
     )
     shutdown_emulator

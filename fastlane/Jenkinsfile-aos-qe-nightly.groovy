@@ -11,7 +11,7 @@ pipeline {
 
     options {
       ansiColor("xterm")
-      timeout(time: 1, unit: "HOUR")
+      timeout(time: 15, unit: "MINUTES")
       buildDiscarder(logRotator(numToKeepStr: "10", artifactNumToKeepStr: "5"))
     }
 
@@ -34,22 +34,19 @@ pipeline {
 
       stage("Parallel") {
         parallel {
-          stage('Unit Tests IntentsAdvancedSample') {
+          stage('Emulator Startup') {
             steps {
-              echo 'Test QE IntentsAdvancedSample'
-              sh 'bundle exec fastlane test_aos_qe'
-            }
-            post {
-              always { stash includes: "ui/espresso/IntentsAdvancedSample/app/build/**/*", name: "test_aos_qe_ias", allowEmpty: true }
+              echo 'Emulator Initializing'
+              sh 'bundle exec fastlane setup_emulator'
             }
           }
-          stage('Unit Tests BasicSample') {
+          stage('Instrumentation Tests') {
             steps {
-              echo 'Test QE BasicSample'
+              echo 'Test QE'
               sh 'bundle exec fastlane test_aos_qe'
             }
             post {
-              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_bs", allowEmpty: true }
+              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe", allowEmpty: true }
             }
           }
         }
@@ -59,27 +56,24 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "test_aos_qe_ias" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
-          try { unstash "test_aos_qe_bs" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
-
+          try { unstash "test_aos_qe" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
-        archiveArtifacts artifacts: "ui/espresso/IntentsAdvancedSample/app/build/**/*", fingerprint: true
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
 
       success {
         sh "echo 'Build Successful' "
-        sh "bundle exec fastlane post_qe_aos_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
+        sh "bundle exec fastlane post_qe_aos_con_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
       unstable {
         sh "echo 'Build Unstable' "
-        sh "bundle exec fastlane post_qe_aos_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
+        sh "bundle exec fastlane post_qe_aos_con_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
       failure {
         sh "echo 'Build Failed' "
-        sh "bundle exec fastlane post_qe_aos_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
+        sh "bundle exec fastlane post_qe_aos_con_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
     }
