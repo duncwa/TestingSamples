@@ -198,6 +198,7 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
+    fastlane-plugin-appcenter (2.0.0)
     fastlane-plugin-automated_test_emulator_run (1.6.0)
     ffi (1.15.5)
     fourflusher (2.3.1)
@@ -429,6 +430,7 @@ DEPENDENCIES
   danger-junit
   danger-ktlint
   fastlane
+  fastlane-plugin-appcenter
   fastlane-plugin-automated_test_emulator_run
   gitlab
   jenkins_api_client
