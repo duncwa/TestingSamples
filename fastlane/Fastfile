@@ -71,10 +71,10 @@ platform :android do
   #  AOS PRA and QE Lanes
   ##################################################
 
-  desc "Run unit tests for TestingSamples Android App"
-  lane :test_aos_pra do
+  desc "Run linter for TestingSamples Android App"
+  lane :test_aos_coverage do
     gradle(
-      task: "testDebugUnitTest",
+      task: "createDebugCoverageReport",
       project_dir: 'ui/espresso/BasicSample'
     )
   end
@@ -83,6 +83,14 @@ platform :android do
   lane :test_aos_linter do
     gradle(
       task: "lint",
+      project_dir: 'ui/espresso/BasicSample'
+    )
+  end
+
+  desc "Run unit tests for TestingSamples Android App"
+  lane :test_aos_pra do
+    gradle(
+      task: "testDebugUnitTest",
       project_dir: 'ui/espresso/BasicSample'
     )
   end
@@ -113,6 +121,10 @@ platform :android do
     sleep 90
     gradle(
       task: test_task,
+      project_dir: "ui/espresso/BasicSample"
+    )
+    gradle(
+      task: "createDebugCoverageReport",
       project_dir: "ui/espresso/BasicSample"
     )
     shutdown_emulator
