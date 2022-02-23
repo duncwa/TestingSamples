@@ -47,6 +47,22 @@ Run Develop Build for TestingSamples Android App
 
 Run Release Build for TestingSamples Android App
 
+### android test_aos_coverage
+
+```sh
+[bundle exec] fastlane android test_aos_coverage
+```
+
+Run linter for TestingSamples Android App
+
+### android test_aos_linter
+
+```sh
+[bundle exec] fastlane android test_aos_linter
+```
+
+Run linter for TestingSamples Android App
+
 ### android test_aos_pra
 
 ```sh
@@ -63,13 +79,13 @@ Run unit tests for TestingSamples Android App
 
 Run Unit Tests and UI Tests for TestingSamples and upload results to JIRA
 
-### android test_aos_instrumentation
+### android test_aos_qe_basic
 
 ```sh
-[bundle exec] fastlane android test_aos_instrumentation
+[bundle exec] fastlane android test_aos_qe_basic
 ```
 
-Run emulator instrumentation tests for TestingSamples Android App
+Run unit tests for BasicSample Android App
 
 ### android test_aos_qe_instrumentation
 
@@ -79,13 +95,13 @@ Run emulator instrumentation tests for TestingSamples Android App
 
 Run emulator instrumentation tests for TestingSamples Android App
 
-### android test_aos_qe_unit
+### android test_aos_qe_varies
 
 ```sh
-[bundle exec] fastlane android test_aos_qe_unit
+[bundle exec] fastlane android test_aos_qe_varies
 ```
 
-Run emulator unit tests for TestingSamples Android App
+Run unit tests for any TestingSamples Android App
 
 ### android setup_emulator
 
@@ -151,14 +167,6 @@ Run Slack reporting for DEV
 
 Run Slack reporting for PRA
 
-### android post_qe_aos_slack_message
-
-```sh
-[bundle exec] fastlane android post_qe_aos_slack_message
-```
-
-Run Slack reporting for QE TestDebug
-
 ### android post_qe_aos_con_slack_message
 
 ```sh
@@ -166,6 +174,14 @@ Run Slack reporting for QE TestDebug
 ```
 
 Run Slack reporting for QE Connected
+
+### android post_qe_aos_slack_message
+
+```sh
+[bundle exec] fastlane android post_qe_aos_slack_message
+```
+
+Run Slack reporting for QE TestDebug
 
 ### android post_rls_slack_message
 
