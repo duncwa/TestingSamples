@@ -36,22 +36,22 @@ pipeline {
 
       stage("Parallel") {
         parallel {
-          stage("Unit Tests Fragment Scenario Sample") {
+          stage("Unit Tests Varies") {
             steps {
-              echo "Test QE Fragment Scenario Sample"
-              sh 'bundle exec fastlane test_aos_qe_unit'
+              echo "Test QE Varies"
+              sh 'bundle exec fastlane test_aos_qe_varies'
             }
             post {
-              always { stash includes: "ui/espresso/FragmentScenarioSample/app/build/**/*", name: "test_aos_qe_fs", allowEmpty: true }
+              always { stash includes: "${project_dir}/app/build/**/*", name: "test_aos_qe_varies", allowEmpty: true }
             }
           }
           stage('Unit Tests BasicSample') {
             steps {
               echo 'Test QE BasicSample'
-              sh 'bundle exec fastlane test_aos_qe_unit'
+              sh 'bundle exec fastlane test_aos_qe_basic'
             }
             post {
-              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_bs", allowEmpty: true }
+              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_basic", allowEmpty: true }
             }
           }
         }
@@ -61,11 +61,11 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "test_aos_qe_fs" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
-          try { unstash "test_aos_qe_bs" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "test_aos_qe_varies" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "test_aos_qe_basic" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
 
         }
-        archiveArtifacts artifacts: "ui/espresso/FragmentScenarioSample/app/build/**/*", fingerprint: true
+        archiveArtifacts artifacts: "${project_dir}/app/build/**/*", fingerprint: true
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
 
