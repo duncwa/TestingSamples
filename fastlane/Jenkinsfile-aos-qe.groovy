@@ -11,7 +11,7 @@ pipeline {
 
     options {
       ansiColor("xterm")
-      timeout(time: 1, unit: "HOUR")
+      timeout(time: 1, unit: "HOURS")
       buildDiscarder(logRotator(numToKeepStr: "10", artifactNumToKeepStr: "5"))
     }
 
@@ -19,6 +19,8 @@ pipeline {
       BUILD_NUM = "${env.BUILD_ID}"
       SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
+      TEST_TASK = ENV['TEST_TASK']
+      PROJECT_DIR = ENV['PROJECT_DIR']
     }
 
     stages {
@@ -37,7 +39,7 @@ pipeline {
           stage('Unit Tests IntentsAdvancedSample') {
             steps {
               echo 'Test QE IntentsAdvancedSample'
-              sh 'bundle exec fastlane test_aos_qe'
+              sh 'bundle exec fastlane test_aos_qe_unit'
             }
             post {
               always { stash includes: "ui/espresso/IntentsAdvancedSample/app/build/**/*", name: "test_aos_qe_ias", allowEmpty: true }
@@ -46,7 +48,7 @@ pipeline {
           stage('Unit Tests BasicSample') {
             steps {
               echo 'Test QE BasicSample'
-              sh 'bundle exec fastlane test_aos_qe'
+              sh 'bundle exec fastlane test_aos_qe_unit'
             }
             post {
               always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_bs", allowEmpty: true }
