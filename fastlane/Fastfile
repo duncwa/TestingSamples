@@ -102,13 +102,22 @@ platform :android do
     shutdown_emulator
   end
 
-  desc "Run emulator unit tests for TestingSamples Android App"
-  lane :test_aos_qe_unit do
+  desc "Run unit tests for any TestingSamples Android App"
+  lane :test_aos_qe_varies do
     test_task = ENV['TEST_TASK']
     project_dir = ENV['PROJECT_DIR']
     gradle(
       task: test_task,
       project_dir: project_dir
+    )
+  end
+
+  desc "Run unit tests for BasicSample Android App"
+  lane :test_aos_qe_basic do
+    test_task = ENV['TEST_TASK']
+    gradle(
+      task: test_task,
+      project_dir: "ui/espresso/BasicSample"
     )
   end
 
