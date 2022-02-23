@@ -416,6 +416,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`✅  Android Task: #{test_task}`*",
         "*`✅  Android Project Build: #{android_project}`*",
+        "*`✅  Android Module Build: BasicSample`*",
         "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/androidTests/connected/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     else
@@ -436,6 +437,7 @@ platform :android do
         "`#{retry_summary}`",
         "*`#{emoji.call(qe_build_succeeded)} Android Task: #{test_task}`*",
         "*`#{emoji.call(qe_build_succeeded)} Android Project Build: #{android_project}`*",
+        "*`#{emoji.call(qe_build_succeeded)} Android Module Build: BasicSample`*",
         "`<#{build_url}artifact/ui/espresso/BasicSample/app/build/reports/androidTests/connected/index.html|* Click to see last job test results*>`"
       ].join("\n\t\t")
     end
