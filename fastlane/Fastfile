@@ -80,7 +80,7 @@ platform :android do
   end
 
   desc "Run linter for TestingSamples Android App"
-  lane :test_aos_linter do
+  lane :test_aos_lint do
     gradle(
       task: "lint",
       project_dir: 'ui/espresso/BasicSample'
