@@ -53,21 +53,19 @@ pipeline {
       }
 
       success {
-        sh "echo 'APK Successful' "
-        slackSend channel: SLACK, message: "APK Generate Successful - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+        sh "echo 'Build Successful' "
+        sh "bundle exec fastlane post_dev_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
 
       unstable {
-        sh "echo 'APK Unsuccessful' "
-        slackSend channel: SLACK,  message: "APK Generate Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+        sh "echo 'Build Unstable' "
+        sh "bundle exec fastlane post_dev_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
 
       }
 
       failure {
-        sh "echo 'APK Failed' "
-        slackSend channel: SLACK,  message: "APK Generate Failed- ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
-
+        sh "echo 'Build Failed' "
+        sh "bundle exec fastlane post_dev_slack_message run_time:${currentBuild.duration / 1000} status:${currentBuild.result}"
       }
-
     }
 }
