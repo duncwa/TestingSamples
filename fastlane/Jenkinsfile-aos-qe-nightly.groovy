@@ -48,7 +48,7 @@ pipeline {
               sh 'bundle exec fastlane test_aos_qe_instrumentation'
             }
             post {
-              always { stash includes: "ui/espresso/${project_dir}/app/build/**/*", name: "test_aos_qe_instrumentation", allowEmpty: true }
+              always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_qe_instrumentation", allowEmpty: true }
             }
           }
         }
@@ -60,7 +60,7 @@ pipeline {
         script {
           try { unstash "test_aos_qe_instrumentation" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
-        archiveArtifacts artifacts: "ui/espresso/${project_dir}/app/build/**/*", fingerprint: true
+        archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
 
       success {
