@@ -43,11 +43,11 @@ platform :android do
 
   desc "Upload apk and mapping results to AppCenter"
   lane :github_upload_rls do |options|
-    build_id = ENV['BUILD_ID']
+    build_id = ENV['BUILD_NUM']
     sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
     sh("git add app-release-unsigned.apk")
     sh('git commit -m "APK Uploaded new release" ')
-    sh('git tag Build-$build_id')
+    sh('git tag Build-${BUILD_NUM}')
     sh('git push --tags')
   end
 
