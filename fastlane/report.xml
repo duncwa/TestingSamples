@@ -5,12 +5,32 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000357">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000342">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: assembleRelease" time="1.232139">
+      <testcase classname="fastlane.lanes" name="1: cp ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk apk/app-release-unsigned.apk" time="0.005571">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: git add apk/app-release-unsigned.apk" time="0.021928">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: git commit -m &quot;APK Uploaded To git repo&quot; " time="0.041135">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: sleep 5" time="5.012263">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: rm apk/app-release-unsigned.apk" time="0.006254">
         
       </testcase>
     
