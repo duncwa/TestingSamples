@@ -33,6 +33,7 @@ pipeline {
               sh 'pwd'
               sh 'echo $PATH'
               sh 'rvm list'
+              sh 'printenv'
           }
       }
       stage('Build and Upload Release APK') {
