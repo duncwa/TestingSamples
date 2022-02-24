@@ -8,7 +8,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
-        applicationId "com.example.android.testing.espresso.BasicSample"
+        applicationId "com.duncwa.android.testing.espresso.BasicSample"
         minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
