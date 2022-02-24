@@ -41,6 +41,15 @@ platform :android do
       sh("rm -f #{apk_dir}/#{apk_name}.apk ||:")
   end
 
+  desc "Upload apk and mapping results to AppCenter"
+  lane :github_upload_rls do |options|
+    sh("cp ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
+    sh("git add app-release-unsigned.apk")
+    sh('git commit -m "APK Upload-$(date +"%Y_%m_%d_%I_%M_%p")" ')
+    sh('sleep 5')
+    sh('rm app-release-unsigned.apk')
+  end
+
   ##################################################
   #  AOS DEV and RLS Lanes
   ##################################################
