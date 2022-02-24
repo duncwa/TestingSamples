@@ -431,7 +431,7 @@ platform :android do
     # message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
 
     # XML parsing
-    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.example.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
+    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.duncwa.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
     document = File.open(output_xml) { |f| Nokogiri::XML(f) }
     # document = Nokogiri::XML(File.open(output_xml))
     puts "Document : #{document}"

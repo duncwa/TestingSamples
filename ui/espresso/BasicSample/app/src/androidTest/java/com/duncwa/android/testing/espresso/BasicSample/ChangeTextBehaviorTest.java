@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.testing.espresso.BasicSample;
+package com.duncwa.android.testing.espresso.BasicSample;
 
 import android.app.Activity;
 

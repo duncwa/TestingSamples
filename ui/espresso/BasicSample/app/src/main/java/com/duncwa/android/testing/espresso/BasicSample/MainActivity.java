@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.testing.espresso.BasicSample;
+package com.duncwa.android.testing.espresso.BasicSample;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,7 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
           mTextView.setText(text);
         } else if (view.getId() == activityChangeTextBtnId) {
           // Second button's interaction: start an activity and send a message to it.
-          Intent intent = com.example.android.testing.espresso.BasicSample.ShowTextActivity
+          Intent intent = com.duncwa.android.testing.espresso.BasicSample.ShowTextActivity
               .newStartIntent(this, text);
           startActivity(intent);
         }
