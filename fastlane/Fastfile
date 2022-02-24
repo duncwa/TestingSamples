@@ -43,12 +43,12 @@ platform :android do
 
   desc "Upload apk and mapping results to AppCenter"
   lane :github_upload_rls do |options|
-    # sh("cp ${pwd}/ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk ${pwd}/fastlane/apk/app-release-unsigned.apk")
-    # sh("git add apk/app-release-unsigned.apk")
-    # sh('git commit -m "APK Uploaded To git repo" ')
-    # sh('git push origin dwal/prasetup" ')
-    sh('ls -al')
-    # sh('rm ${pwd}/fastlane/apk/app-release-unsigned.apk')
+    build_number = ENV['BUILD_NUM']
+    sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
+    sh("git add app-release-unsigned.apk")
+    sh('git commit -m "APK Uploaded new release" ')
+    sh('git tag v-$build_number')
+    sh('git push --tags')
   end
 
   ##################################################
