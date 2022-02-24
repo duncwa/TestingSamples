@@ -46,6 +46,7 @@ platform :android do
     sh("cp ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk apk/app-release-unsigned.apk")
     sh("git add apk/app-release-unsigned.apk")
     sh('git commit -m "APK Uploaded To git repo" ')
+    sh('git push origin dwal/prasetup" ')
     sh('sleep 5')
     sh('rm apk/app-release-unsigned.apk')
   end
