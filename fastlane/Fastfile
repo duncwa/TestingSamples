@@ -13,10 +13,39 @@ default_platform(:android)
 platform :android do
 
   ##################################################
-  #  AOS DEV and RLS Lanes
+  #  AOS RLS Signing
   ##################################################
 
   desc "Upload apk and mapping results to AppCenter"
+  lane :sign_rls_apk do |options|
+      options = options
+
+      #Setup environment
+      android_playstore_file = ENV["KEYSTOREFILE"]
+      android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
+      android_playstore_alias = ENV["KEYSTOREALIAS"]
+      android_sdk_directory = ENV["ANDROID_HOME"]
+
+      flavor = ENV["FLAVOR"]
+      apk_dir = options[:apk_dir]
+      apk_file = options[:apk_file]
+      apk_name = options[:apk_name]
+      keystore_path = options[:keystore_path]
+
+      sigalg = "MD5withRSA"
+      digestalg = "SHA1"
+      store_pwd = android_playstore_pwd
+      store_alias = android_playstore_alias
+
+      #Cleanup old apk/abb
+      sh("rm -f #{apk_dir}/#{apk_name}.apk ||:")
+  end
+
+  ##################################################
+  #  AOS DEV and RLS Lanes
+  ##################################################
+
+  desc "Upload RLS apk and mapping results to AppCenter"
   lane :appcenter_upload_rls do
     appcenter_upload(
       api_token: ENV["APPCENTER_TOKEN_DLO"],
@@ -33,6 +62,7 @@ platform :android do
     )
   end
 
+  desc "Upload DEV apk and mapping results to AppCenter"
   lane :appcenter_upload_dev do
     appcenter_upload(
       api_token: ENV["APPCENTER_TOKEN_DLO"],
@@ -63,7 +93,8 @@ platform :android do
     gradle(
       task: "assemble",
       build_type: "Release",
-      project_dir: 'ui/espresso/BasicSample'
+      project_dir: 'ui/espresso/BasicSample',
+      print_command: false,
     )
   end
 
