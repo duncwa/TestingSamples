@@ -1,4 +1,4 @@
-package com.example.android.testing.espresso.BasicSample;
+package com.duncwa.android.testing.espresso.BasicSample;
 
 
 import static androidx.test.espresso.Espresso.onView;
