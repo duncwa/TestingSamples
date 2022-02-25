@@ -13,45 +13,6 @@ default_platform(:android)
 platform :android do
 
   ##################################################
-  #  AOS RLS Signing
-  ##################################################
-
-  desc "Upload apk and mapping results to AppCenter"
-  lane :sign_rls_apk do |options|
-      options = options
-
-      #Setup environment
-      android_playstore_file = ENV["KEYSTOREFILE"]
-      android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
-      android_playstore_alias = ENV["KEYSTOREALIAS"]
-      android_sdk_directory = ENV["ANDROID_HOME"]
-
-      flavor = ENV["FLAVOR"]
-      apk_dir = options[:apk_dir]
-      apk_file = options[:apk_file]
-      apk_name = options[:apk_name]
-      keystore_path = options[:keystore_path]
-
-      sigalg = "MD5withRSA"
-      digestalg = "SHA1"
-      store_pwd = android_playstore_pwd
-      store_alias = android_playstore_alias
-
-      #Cleanup old apk/abb
-      sh("rm -f #{apk_dir}/#{apk_name}.apk ||:")
-  end
-
-  desc "Upload apk and mapping results to AppCenter"
-  lane :github_upload_rls do |options|
-    build_id = ENV['BUILD_NUM']
-    sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
-    sh("git add app-release-unsigned.apk")
-    sh('git commit -m "APK Uploaded new release" ')
-    sh('git tag Build-${BUILD_NUM}')
-    sh('git push --tags')
-  end
-
-  ##################################################
   #  AOS DEV and RLS Lanes
   ##################################################
 
@@ -100,12 +61,61 @@ platform :android do
 
   desc "Run Release Build for TestingSamples Android App"
   lane :generate_rls_apk do
+
+    android_playstore_file = ENV["KEYSTOREFILE"]
+    android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
+    android_playstore_alias = ENV["KEYSTOREALIAS"]
+    android_sdk_directory = ENV["ANDROID_HOME"]
+    # sh("printenv")
     gradle(
       task: "assemble",
       build_type: "Release",
       project_dir: 'ui/espresso/BasicSample',
+      print_command: false
+    )
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: 'ui/espresso/BasicSample',
       print_command: false,
     )
+
+    flavor = ENV["FLAVOR"]
+    apk_dir = "../ui/espresso/BasicSample/app/build/outputs/apk/release"
+    apk_file = "app-release-unsigned.apk"
+    signed_apk_file = "app-release-signed"
+    keystore_path = "/Users/duncwa/cicdgit/creds/aos"
+
+    sigalg = "SHA1withRSA"
+    digestalg = "SHA1"
+
+    #Cleanup old apk/abb
+    sh("ls -al ../ui/espresso/BasicSample/app/build/outputs/apk/release")
+    sh("rm -f #{apk_dir}/#{signed_apk_file}.apk ||:")
+
+    sh("zip -d #{apk_dir}/#{apk_file} META-INF/\*.RSA META-INF/\*.SF META/\*.MF ||:")
+
+    sh("jarsigner -verbose -sigalg #{sigalg} -digestalg #{digestalg} -keystore #{android_playstore_file} #{apk_dir}/#{apk_file} #{android_playstore_alias}")
+    zipalign = "#{android_home}/build-tools/30.0.2/zipalign"
+    apksigner = "#{android_home}/build-tools/30.0.2/apksigner"
+
+    sh("#{zipalign} -v 4 #{apk_file} #{apk_dir}/#{signed_apk_file}.apk")
+    sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-password #{android_playstore_pwd}")
+  end
+
+  desc "Upload AAB files to Google Play Store"
+  lane :upload_rls_apk do
+    upload_to_play_store apk:'../ui/espresso/BasicSample/app/build/outputs/release/app-release-signed.apk'
+  end
+
+  desc "Upload apk results to AppCenter"
+  lane :github_upload_rls do |options|
+    build_id = ENV['BUILD_NUM']
+    sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
+    sh("git add app-release-unsigned.apk")
+    sh('git commit -m "APK Uploaded new release" ')
+    sh('git tag Build-${BUILD_NUM}')
+    sh('git push --tags')
   end
 
   ##################################################
@@ -431,7 +441,7 @@ platform :android do
     # message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
 
     # XML parsing
-    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.duncwa.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
+    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.dw4workonly.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
     document = File.open(output_xml) { |f| Nokogiri::XML(f) }
     # document = Nokogiri::XML(File.open(output_xml))
     puts "Document : #{document}"

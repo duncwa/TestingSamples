@@ -5,7 +5,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
-        applicationId "com.duncwa.android.testing.androidjunitrunnersample"
+        applicationId "com.dw4workonly.android.testing.androidjunitrunnersample"
         minSdkVersion 14
         targetSdkVersion 30
         versionCode 1

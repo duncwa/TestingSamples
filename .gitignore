@@ -18,9 +18,10 @@ bazel-*
 /.idea/assetWizardSettings.xml
 
 # Fastlane and Build
-Fastlane/*-output
+fastlane/*-output
 build
 /captures
 .externalNativeBuild
 .cxx
 /app/secrets
+fastlane/*.xml

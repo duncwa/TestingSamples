@@ -1,2 +1,2 @@
-json_key_file("./app/secrets") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
-package_name("com.duncwa.tesingsamples") # e.g. com.krausefx.app
+json_key_file("/Users/duncwa/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.dw4workonly.android.testing.espresso.BasicSample") # e.g. com.krausefx.app

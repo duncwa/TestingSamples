@@ -43,6 +43,7 @@ pipeline {
         echo 'Test PRA'
         sh 'bundle exec fastlane test_aos_pra'
         sh 'bundle exec fastlane test_aos_lint'
+        sh 'bundle exec fastlane test_aos_coverage'
       }
       post {
         always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "test_aos_pra", allowEmpty: true }
