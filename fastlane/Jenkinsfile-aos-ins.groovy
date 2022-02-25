@@ -8,7 +8,7 @@
 
 pipeline {
     agent { label "fastlane_ins" }
-    
+
     options {
       ansiColor("xterm")
       timeout(time: 1, unit: "HOURS")
@@ -16,6 +16,7 @@ pipeline {
     }
 
     environment {
+      APPCENTER_TOKEN_DLO = credentials("s.appcenterduncwa_full")
       BUILD_NUM = "${env.BUILD_ID}"
       SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"

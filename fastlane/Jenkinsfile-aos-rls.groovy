@@ -16,10 +16,10 @@ pipeline {
     }
 
     environment {
+      APPCENTER_TOKEN_DLO = credentials("s.appcenterduncwa_full")
       KEYSTOREFILE = credentials("s.android_playstore_store_file")
       KEYSTOREPASSWORD = credentials("s.android_playstore_pwd")
       KEYSTOREALIAS = credentials("s.android_playstore_alias")
-      ghprbPullId = "${env.PULL_REQ_NUM}"
       BUILD_NUM = "${env.BUILD_ID}"
       SLACK_URL = credentials("s.slackwebhookurl")
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
