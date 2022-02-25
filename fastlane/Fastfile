@@ -66,7 +66,7 @@ platform :android do
     android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
     android_playstore_alias = ENV["KEYSTOREALIAS"]
     android_sdk_directory = ENV["ANDROID_HOME"]
-    # sh("printenv")
+    #sh("printenv")
     gradle(
       task: "assemble",
       build_type: "Release",
