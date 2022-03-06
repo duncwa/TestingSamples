@@ -15,8 +15,8 @@ pipeline {
   }
 
   environment {
-    DANGER_GITHUB_API_TOKEN = credentials("s.githubtoken")
-    DANGER_GITHUB_CREDS_USR = credentials("s.githubtoken_full")
+    DANGER_GITHUB_API_TOKEN = credentials('s.githubtoken')
+    DANGER_GITHUB_CREDS_USR = credentials('s.githubtoken_full')
     DANGER_GITHUB_API_TOKEN_USR = "${env.DANGER_GITHUB_CREDS_USR}"
     DANGER_GITHUB_API_TOKEN_PSW = "${env.DANGER_GITHUB_CREDS_PSW}"
     ghprbPullId = "${env.CHANGE_ID}"

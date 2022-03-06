@@ -31,26 +31,26 @@ Upload RLS apk and mapping results to AppCenter
 
 Upload DEV apk and mapping results to AppCenter
 
-### android generate_dev_apk
+### android generate_dev
 
 ```sh
-[bundle exec] fastlane android generate_dev_apk
+[bundle exec] fastlane android generate_dev
 ```
 
 Run Develop Build for TestingSamples Android App
 
-### android generate_rls_apk
+### android generate_rls
 
 ```sh
-[bundle exec] fastlane android generate_rls_apk
+[bundle exec] fastlane android generate_rls
 ```
 
 Run Release Build for TestingSamples Android App
 
-### android upload_rls_apk
+### android upload_rls_aab
 
 ```sh
-[bundle exec] fastlane android upload_rls_apk
+[bundle exec] fastlane android upload_rls_aab
 ```
 
 Upload AAB files to Google Play Store

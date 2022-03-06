@@ -51,20 +51,36 @@ platform :android do
   end
 
   desc "Run Develop Build for TestingSamples Android App"
-  lane :generate_dev_apk do
+  lane :generate_dev do
     gradle(
       task: "assemble",
-      build_type: "Release",
+      build_type: "Debug",
       project_dir: 'ui/espresso/BasicSample'
+    )
+    gradle(
+      task: "bundle",
+      build_type: "Debug",
+      project_dir: 'ui/espresso/BasicSample',
+      print_command: false,
     )
   end
 
   desc "Run Release Build for TestingSamples Android App"
-  lane :generate_rls_apk do
+  lane :generate_rls do
+    aab_dir = "../ui/espresso/BasicSample/app/build/outputs/bundle/release"
+    signed_aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release"
 
-    android_playstore_file = ENV["KEYSTOREFILE"]
+    apk_dir = "../ui/espresso/BasicSample/app/build/outputs/apk/release"
+    signed_apk_file = "../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-signed"
+
+    #Cleanup old apk/abb
+    sh("ls -al ../ui/espresso/BasicSample/app/build/outputs/bundle/release")
+    sh("rm -f #{signed_aab_file}.aab ||:")
+    sh("rm -f #{signed_apk_file}.apk ||:")
+
+    android_playstore_file =  "/Users/duncwa/cicdgit/creds/aos/upload-keystore.jks"
     android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
-    android_playstore_alias = ENV["KEYSTOREALIAS"]
+    android_playstore_alias = "upload"
     android_sdk_directory = ENV["ANDROID_HOME"]
     #sh("printenv")
     gradle(
@@ -81,31 +97,31 @@ platform :android do
     )
 
     flavor = ENV["FLAVOR"]
-    apk_dir = "../ui/espresso/BasicSample/app/build/outputs/apk/release"
-    apk_file = "app-release-unsigned.apk"
-    signed_apk_file = "app-release-signed"
-    keystore_path = "/Users/duncwa/cicdgit/creds/aos"
 
-    sigalg = "SHA1withRSA"
+    keystore_path = "/Users/duncwa/cicdgit/creds/aos/upload-keystore.jks"
+    aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab"
+    apk_file = "../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk"
+
+    sigalg = "MD5withRSA"
     digestalg = "SHA1"
 
-    #Cleanup old apk/abb
-    sh("ls -al ../ui/espresso/BasicSample/app/build/outputs/apk/release")
-    sh("rm -f #{apk_dir}/#{signed_apk_file}.apk ||:")
+    sh("zip -d #{apk_file} META-INF/\*.RSA META-INF/\*.SF META/\*.MF ||:")
 
-    sh("zip -d #{apk_dir}/#{apk_file} META-INF/\*.RSA META-INF/\*.SF META/\*.MF ||:")
+    sh('jarsigner -verbose -sigalg $sigalg -digestalg $digestalg -keystore $android_playstore_file -storepass $android_playstore_pwd $aab_file $android_playstore_alias')
+    zipalign = "#{android_home}/build-tools/30.0.2/zipalign" #APK Only
+    apksigner = "#{android_home}/build-tools/30.0.2/apksigner" #APK Only
 
-    sh("jarsigner -verbose -sigalg #{sigalg} -digestalg #{digestalg} -keystore #{android_playstore_file} #{apk_dir}/#{apk_file} #{android_playstore_alias}")
-    zipalign = "#{android_home}/build-tools/30.0.2/zipalign"
-    apksigner = "#{android_home}/build-tools/30.0.2/apksigner"
-
-    sh("#{zipalign} -v 4 #{apk_file} #{apk_dir}/#{signed_apk_file}.apk")
-    sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-password #{android_playstore_pwd}")
+    sh("#{zipalign} -v 4 #{apk_file}") #APK_ONLY
+    sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-pass pass:#{android_playstore_pwd} #{apk_file}")
+    sh("#{apksigner} verify  #{apk_file}")
   end
 
   desc "Upload AAB files to Google Play Store"
-  lane :upload_rls_apk do
-    upload_to_play_store apk:'../ui/espresso/BasicSample/app/build/outputs/release/app-release-signed.apk'
+  lane :upload_rls_aab do
+    upload_to_play_store(
+      aab:'ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab',
+      release_status: 'draft'
+    )
   end
 
   desc "Upload apk results to AppCenter"
