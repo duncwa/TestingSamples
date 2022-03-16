@@ -47,10 +47,10 @@ Run Develop Build for TestingSamples Android App
 
 Run Release Build for TestingSamples Android App
 
-### android upload_rls_aab
+### android upload_rls
 
 ```sh
-[bundle exec] fastlane android upload_rls_aab
+[bundle exec] fastlane android upload_rls
 ```
 
 Upload AAB files to Google Play Store

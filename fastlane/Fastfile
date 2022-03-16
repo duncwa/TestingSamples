@@ -74,7 +74,7 @@ platform :android do
     signed_apk_file = "../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-signed"
 
     #Cleanup old apk/abb
-    sh("ls -al ../ui/espresso/BasicSample/app/build/outputs/bundle/release")
+    sh("ls -al ../ui/espresso/BasicSample/app/build/outputs/bundle/release ||:")
     sh("rm -f #{signed_aab_file}.aab ||:")
     sh("rm -f #{signed_apk_file}.apk ||:")
 
@@ -140,7 +140,7 @@ platform :android do
   end
 
   desc "Upload AAB files to Google Play Store"
-  lane :upload_rls_aab do
+  lane :upload_rls do
     json_key = '/Users/cicdbuild/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json'
     aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
     apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
@@ -160,9 +160,11 @@ platform :android do
   desc "Upload apk results to AppCenter"
   lane :github_upload_rls do |options|
     build_id = ENV['BUILD_NUM']
-    sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
-    sh("git add app-release-unsigned.apk")
-    sh('git commit -m "APK Uploaded new release" ')
+    sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release.apk app-release.apk")
+    sh("mv ../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab app-release.aab")
+    sh("git add app-release.apk")
+    sh("git add app-release.aab")
+    sh('git commit -m "AAB and APK Uploaded new release" ')
     sh('git tag Build-${BUILD_NUM}')
     sh('git push --tags')
   end

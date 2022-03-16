@@ -36,15 +36,15 @@ pipeline {
               sh 'printenv'
           }
       }
-      stage('Build and Upload Release APK') {
+      stage('Build and Upload Release APK and AAB') {
           steps {
-              echo 'Generate APK'
-              sh 'bundle exec fastlane generate_rls_apk'
+              echo 'Generate APK and AAB'
+              sh 'bundle exec fastlane generate_rls'
               sh 'bundle exec fastlane appcenter_upload_rls'
               sh 'bundle exec fastlane github_upload_rls'
           }
           post {
-            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "generate_rls_apk", allowEmpty: true }
+            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "generate_rls", allowEmpty: true }
           }
       }
     }
@@ -52,7 +52,7 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "generate_rls_apk" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "generate_rls" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
