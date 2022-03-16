@@ -20,6 +20,7 @@ platform :android do
   lane :appcenter_upload_rls do
     apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
     aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     appcenter_upload(
       api_token: ENV["APPCENTER_TOKEN_DLO"],
       owner_name: ENV["APPCENTER_ORG"],
@@ -27,6 +28,7 @@ platform :android do
       app_name: ENV["APPCENTER_RLS_APP_NAME"],
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
       file: apk_file,
+      mapping: mapping_file,
       dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
       build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
       version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
