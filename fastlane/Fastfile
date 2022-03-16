@@ -156,7 +156,6 @@ platform :android do
     mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     upload_to_play_store(
       aab: aab_file,
-      apk: apk_file,
       version_name: "1.5", #overrides buld.gradle setting in versionName
       version_code: 2,
       mapping: mapping_file,
