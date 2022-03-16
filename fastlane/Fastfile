@@ -29,7 +29,6 @@ platform :android do
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
       file: apk_file,
       mapping: mapping_file,
-      dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
       build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
       version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
       app_platform: "android",
@@ -41,6 +40,7 @@ platform :android do
   lane :appcenter_upload_dev do
     apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
     aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     appcenter_upload(
       api_token: ENV["APPCENTER_TOKEN_DLO"],
       owner_name: ENV["APPCENTER_ORG"],
@@ -48,7 +48,7 @@ platform :android do
       app_name: ENV["APPCENTER_DEV_APP_NAME"],
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
       file: apk_file,
-      dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
+      mapping: mapping_file,
       build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
       version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
       app_platform: "android",
@@ -153,13 +153,13 @@ platform :android do
     json_key = '/Users/cicdbuild/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json'
     aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
     apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
-    mapping_files = lane_context[SharedValues::GRADLE_ALL_MAPPING_TXT_OUTPUT_PATHS]
+    mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     upload_to_play_store(
       aab: aab_file,
       apk: apk_file,
       version_name: "1.5", #overrides buld.gradle setting in versionName
       version_code: 2,
-      mapping: mapping_files,
+      mapping: mapping_file,
       release_status: 'draft',
       track: 'internal',
       json_key: json_key
