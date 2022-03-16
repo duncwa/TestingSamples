@@ -16,7 +16,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.duncwa.android.testing.espresso.BasicSample" >
+    package="com.dw4workonly.android.testing.espresso.BasicSample" >
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="28" />
 </manifest>

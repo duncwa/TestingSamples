@@ -20,7 +20,7 @@ pipeline {
       JIRA_SERVER_USERNAME = "${env.DANGER_CREDS_USR}"
       JIRA_SERVER_PASSWORD = "${env.DANGER_CREDS_PSW}"
       BUILD_NUM = "${env.BUILD_ID}"
-      SLACK_URL = credentials("s.slackwebhookurl")
+      SLACK_URL = credentials('s.slackwebhookurl')
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
     }
 

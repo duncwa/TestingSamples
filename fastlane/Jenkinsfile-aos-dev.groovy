@@ -16,9 +16,9 @@ pipeline {
     }
 
     environment {
-      ghprbPullId = "${env.PULL_REQ_NUM}"
+      APPCENTER_TOKEN_DLO = credentials('s.appcenterduncwa_full')
       BUILD_NUM = "${env.BUILD_ID}"
-      SLACK_URL = credentials("s.slackwebhookurl")
+      SLACK_URL = credentials('s.slackwebhookurl')
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
     }
 

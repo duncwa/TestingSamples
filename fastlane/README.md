@@ -15,22 +15,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android sign_rls_apk
-
-```sh
-[bundle exec] fastlane android sign_rls_apk
-```
-
-Upload apk and mapping results to AppCenter
-
-### android github_upload_rls
-
-```sh
-[bundle exec] fastlane android github_upload_rls
-```
-
-Upload apk and mapping results to AppCenter
-
 ### android appcenter_upload_rls
 
 ```sh
@@ -47,21 +31,37 @@ Upload RLS apk and mapping results to AppCenter
 
 Upload DEV apk and mapping results to AppCenter
 
-### android generate_dev_apk
+### android generate_dev
 
 ```sh
-[bundle exec] fastlane android generate_dev_apk
+[bundle exec] fastlane android generate_dev
 ```
 
 Run Develop Build for TestingSamples Android App
 
-### android generate_rls_apk
+### android generate_rls
 
 ```sh
-[bundle exec] fastlane android generate_rls_apk
+[bundle exec] fastlane android generate_rls
 ```
 
 Run Release Build for TestingSamples Android App
+
+### android upload_rls
+
+```sh
+[bundle exec] fastlane android upload_rls
+```
+
+Upload AAB files to Google Play Store
+
+### android github_upload_rls
+
+```sh
+[bundle exec] fastlane android github_upload_rls
+```
+
+Upload apk results to AppCenter
 
 ### android test_aos_coverage
 

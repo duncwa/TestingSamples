@@ -13,58 +13,22 @@ default_platform(:android)
 platform :android do
 
   ##################################################
-  #  AOS RLS Signing
-  ##################################################
-
-  desc "Upload apk and mapping results to AppCenter"
-  lane :sign_rls_apk do |options|
-      options = options
-
-      #Setup environment
-      android_playstore_file = ENV["KEYSTOREFILE"]
-      android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
-      android_playstore_alias = ENV["KEYSTOREALIAS"]
-      android_sdk_directory = ENV["ANDROID_HOME"]
-
-      flavor = ENV["FLAVOR"]
-      apk_dir = options[:apk_dir]
-      apk_file = options[:apk_file]
-      apk_name = options[:apk_name]
-      keystore_path = options[:keystore_path]
-
-      sigalg = "MD5withRSA"
-      digestalg = "SHA1"
-      store_pwd = android_playstore_pwd
-      store_alias = android_playstore_alias
-
-      #Cleanup old apk/abb
-      sh("rm -f #{apk_dir}/#{apk_name}.apk ||:")
-  end
-
-  desc "Upload apk and mapping results to AppCenter"
-  lane :github_upload_rls do |options|
-    build_id = ENV['BUILD_NUM']
-    sh("mv ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk app-release-unsigned.apk")
-    sh("git add app-release-unsigned.apk")
-    sh('git commit -m "APK Uploaded new release" ')
-    sh('git tag Build-${BUILD_NUM}')
-    sh('git push --tags')
-  end
-
-  ##################################################
   #  AOS DEV and RLS Lanes
   ##################################################
 
   desc "Upload RLS apk and mapping results to AppCenter"
   lane :appcenter_upload_rls do
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     appcenter_upload(
       api_token: ENV["APPCENTER_TOKEN_DLO"],
       owner_name: ENV["APPCENTER_ORG"],
       owner_type: "organization", # Default is user - set to organization for appcenter organizations
       app_name: ENV["APPCENTER_RLS_APP_NAME"],
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
-      file: "ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk",
-      dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
+      file: apk_file,
+      mapping: mapping_file,
       build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
       version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
       app_platform: "android",
@@ -74,14 +38,17 @@ platform :android do
 
   desc "Upload DEV apk and mapping results to AppCenter"
   lane :appcenter_upload_dev do
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     appcenter_upload(
       api_token: ENV["APPCENTER_TOKEN_DLO"],
       owner_name: ENV["APPCENTER_ORG"],
       owner_type: "organization", # Default is user - set to organization for appcenter organizations
       app_name: ENV["APPCENTER_DEV_APP_NAME"],
       notify_testers: true, # Set to false if you don't want to notify testers of your new release (default: `false`)
-      file: "ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk",
-      dsym: ENV["APPCENTER_DISTRIBUTE_DSYM"],
+      file: apk_file,
+      mapping: mapping_file,
       build_number: ENV["APPCENTER_DISTRIBUTE_BUILD_NUMBER"],
       version: ENV["APPCENTER_DISTRIBUTE_VERSION"],
       app_platform: "android",
@@ -90,22 +57,130 @@ platform :android do
   end
 
   desc "Run Develop Build for TestingSamples Android App"
-  lane :generate_dev_apk do
+  lane :generate_dev do
     gradle(
       task: "assemble",
-      build_type: "Release",
+      build_type: "Debug",
       project_dir: 'ui/espresso/BasicSample'
+    )
+    gradle(
+      task: "bundle",
+      build_type: "Debug",
+      project_dir: 'ui/espresso/BasicSample',
+      print_command: false,
     )
   end
 
   desc "Run Release Build for TestingSamples Android App"
-  lane :generate_rls_apk do
+  lane :generate_rls do
+    aab_dir = "../ui/espresso/BasicSample/app/build/outputs/bundle/release"
+    signed_aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release"
+
+    apk_dir = "../ui/espresso/BasicSample/app/build/outputs/apk/release"
+    signed_apk_file = "../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-signed"
+
+    #Cleanup old apk/abb
+    sh("ls -al ../ui/espresso/BasicSample/app/build/outputs/bundle/release ||:")
+    sh("rm -f #{signed_aab_file}.aab ||:")
+    sh("rm -f #{signed_apk_file}.apk ||:")
+
+    # JENKINSfile for RLS env vars
+    # APPCENTER_TOKEN_DLO = credentials('s.appcenterduncwa_full')
+    # KEYSTOREFILE = credentials('s.android_playstore_store_file')
+    # KEYSTOREPASSWORD = credentials('s.android_playstore_pwd')
+    # KEYSTOREALIAS = credentials('s.android_playstore_alias')
+
+    android_playstore_file =  "/Users/cicdbuild/cicdgit/creds/aos/upload-keystore.jks"
+    android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
+    android_playstore_alias = "upload"
+    android_home = ENV["ANDROID_HOME"]
+    #sh("printenv")
     gradle(
       task: "assemble",
       build_type: "Release",
       project_dir: 'ui/espresso/BasicSample',
       print_command: false,
+      print_command_output: false,
+      properties: {
+        "android.injected.signing.store.file" => android_playstore_file,
+        "android.injected.signing.store.password" => android_playstore_pwd,
+        "android.injected.signing.key.alias" => android_playstore_alias,
+        "android.injected.signing.key.password" => android_playstore_pwd,
+      }
     )
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: 'ui/espresso/BasicSample',
+      print_command: false,
+      print_command_output: false,
+      properties: {
+        "android.injected.signing.store.file" => android_playstore_file,
+        "android.injected.signing.store.password" => android_playstore_pwd,
+        "android.injected.signing.key.alias" => android_playstore_alias,
+        "android.injected.signing.key.password" => android_playstore_pwd,
+      }
+    )
+
+    flavor = ENV["FLAVOR"]
+
+    keystore_path = "/Users/cicdbuild/cicdgit/creds/aos/upload-keystore.jks"
+    #aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab"
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    sigalgo = "SHA256withRSA" #MD5withRSA # SHA256withRSA
+    digestalgo = "SHA-256" #SHA1 # SHA-256
+
+    ###sh("zip -d #{apk_file} META-INF/\*.RSA META-INF/\*.SF META/\*.MF ||:")
+
+    # sh('jarsigner -verbose -sigalg $sigalgo -digestalg $digestalgo -keystore $android_playstore_file -storepass $android_playstore_pwd -keypass $android_playstore_pwd $aab_file $android_playstore_alias')
+    # sh('jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore $(KeyStoreFile.secureFilePath) -storepass $(StorePassword) -keypass $(KeyPassword) $(system.defaultworkingdirectory)/app/build/outputs/bundle/release/app-release.aab $(KeyStoreAlias)')
+    ###sh('jarsigner -verbose -sigalg \"$sigalgo\" -digestalg \"$digestalgo\" -keystore $keystore_path -storepass \"$android_playstore_pwd\" -keypass \"$android_playstore_pwd\" \"$aab_file\" $android_playstore_alias')
+
+    ###zipalign = "#{android_home}/build-tools/30.0.2/zipalign" #APK Only
+    ###apksigner = "#{android_home}/build-tools/30.0.2/apksigner" #APK Only
+
+    ###sh("#{zipalign} -v 4 #{apk_file}") #APK_ONLY
+    ###sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-pass pass:#{android_playstore_pwd} #{apk_file}")
+    ###sh("#{apksigner} verify  #{apk_file}")
+    appcenter_upload_rls
+    upload_rls
+    github_upload_rls
+  end
+
+  desc "Upload AAB files to Google Play Store"
+  lane :upload_rls do
+    json_key = '/Users/cicdbuild/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json'
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    # mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
+    # sh("echo 'aab_file is: #{aab_file}'")
+    # sh("echo 'apk_file is: #{apk_file}'")
+    # sh("echo 'mapping_file is: #{mapping_file}'")
+    upload_to_play_store(
+      skip_upload_apk: true,
+      aab: aab_file,
+      version_name: "1.5", #overrides buld.gradle setting in versionName
+      version_code: 3,
+      # mapping: mapping_file,
+      release_status: 'draft',
+      track: 'internal',
+      json_key: json_key
+    )
+  end
+
+  desc "Upload apk results to AppCenter"
+  lane :github_upload_rls do |options|
+    build_id = ENV['BUILD_NUM']
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    sh("cp #{apk_file} app-release.apk")
+    sh("cp #{aab_file} app-release.aab")
+    sh("git add app-release.apk")
+    sh("git add app-release.aab")
+    sh('git commit -m "AAB and APK Uploaded new release" ')
+    sh('git tag Build-${BUILD_NUM}')
+    sh('git push --tags')
   end
 
   ##################################################
@@ -431,7 +506,7 @@ platform :android do
     # message = "*#{status} - <#{build_url}|#{job_base_name} Build ##{build_id}> #{result} #{run_time} <#{build_url+'artifact/fastlane/test_output/report.html'}|#{'Results'}> *"
 
     # XML parsing
-    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.duncwa.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
+    output_xml = "#{pwd}/ui/espresso/BasicSample/app/build/test-results/testDebugUnitTest/TEST-com.dw4workonly.android.testing.espresso.BasicSample.ChangeTextBehaviorLocalTest.xml"
     document = File.open(output_xml) { |f| Nokogiri::XML(f) }
     # document = Nokogiri::XML(File.open(output_xml))
     puts "Document : #{document}"

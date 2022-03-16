@@ -16,12 +16,12 @@ pipeline {
     }
 
     environment {
-      KEYSTOREFILE = credentials("s.android_playstore_store_file")
-      KEYSTOREPASSWORD = credentials("s.android_playstore_pwd")
-      KEYSTOREALIAS = credentials("s.android_playstore_alias")
-      ghprbPullId = "${env.PULL_REQ_NUM}"
+      APPCENTER_TOKEN_DLO = credentials('s.appcenterduncwa_full')
+      KEYSTOREFILE = credentials('s.android_playstore_store_file')
+      KEYSTOREPASSWORD = credentials('s.android_playstore_pwd')
+      KEYSTOREALIAS = credentials('s.android_playstore_alias')
       BUILD_NUM = "${env.BUILD_ID}"
-      SLACK_URL = credentials("s.slackwebhookurl")
+      SLACK_URL = credentials('s.slackwebhookurl')
       SLACK_CHANNEL = "${env.SLACK_CHANNEL}"
     }
 
@@ -36,15 +36,13 @@ pipeline {
               sh 'printenv'
           }
       }
-      stage('Build and Upload Release APK') {
+      stage('Build and Upload Release APK and AAB') {
           steps {
-              echo 'Generate APK'
-              sh 'bundle exec fastlane generate_rls_apk'
-              sh 'bundle exec fastlane appcenter_upload_rls'
-              sh 'bundle exec fastlane github_upload_rls'
+              echo 'Generate APK and AAB'
+              sh 'bundle exec fastlane generate_rls'
           }
           post {
-            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "generate_rls_apk", allowEmpty: true }
+            always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "generate_rls", allowEmpty: true }
           }
       }
     }
@@ -52,7 +50,7 @@ pipeline {
     post {
       always {
         script {
-          try { unstash "generate_rls_apk" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
+          try { unstash "generate_rls" }  catch (e) { echo "Failed to unstash stash: " + e.toString() }
         }
         archiveArtifacts artifacts: "ui/espresso/BasicSample/app/build/**/*", fingerprint: true
       }
