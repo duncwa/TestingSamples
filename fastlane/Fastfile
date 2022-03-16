@@ -153,7 +153,7 @@ platform :android do
     json_key = '/Users/cicdbuild/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json'
     aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
     apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
-    mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
+    # mapping_file = lane_context[SharedValues::GRADLE_MAPPING_TXT_OUTPUT_PATH]
     # sh("echo 'aab_file is: #{aab_file}'")
     # sh("echo 'apk_file is: #{apk_file}'")
     # sh("echo 'mapping_file is: #{mapping_file}'")
@@ -162,7 +162,7 @@ platform :android do
       aab: aab_file,
       version_name: "1.5", #overrides buld.gradle setting in versionName
       version_code: 3,
-      mapping: mapping_file,
+      # mapping: mapping_file,
       release_status: 'draft',
       track: 'internal',
       json_key: json_key
