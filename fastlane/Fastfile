@@ -118,7 +118,7 @@ platform :android do
 
     flavor = ENV["FLAVOR"]
 
-    keystore_path = "/Users/duncwa/cicdgit/creds/aos/upload-keystore.jks"
+    keystore_path = "/Users/cicdbuild/cicdgit/creds/aos/upload-keystore.jks"
     #aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab"
     apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
     aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
