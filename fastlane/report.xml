@@ -5,32 +5,12 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000341">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000319">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: ls -al ../ui/espresso/BasicSample/app/build/outputs/bundle/release ||:" time="0.008771">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: rm -f ../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab ||:" time="0.008149">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: rm -f ../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-signed.apk ||:" time="0.007991">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: assembleRelease" time="2.899121">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: bundleRelease" time="1.488711">
+      <testcase classname="fastlane.lanes" name="1: echo 'aab_file is: /Users/duncwa/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json'" time="0.006555">
         
       </testcase>
     
