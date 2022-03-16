@@ -141,6 +141,9 @@ platform :android do
     ###sh("#{zipalign} -v 4 #{apk_file}") #APK_ONLY
     ###sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-pass pass:#{android_playstore_pwd} #{apk_file}")
     ###sh("#{apksigner} verify  #{apk_file}")
+    appcenter_upload_rls
+    upload_rls
+    github_upload_rls
   end
 
   desc "Upload AAB files to Google Play Store"

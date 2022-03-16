@@ -40,9 +40,6 @@ pipeline {
           steps {
               echo 'Generate APK and AAB'
               sh 'bundle exec fastlane generate_rls'
-              sh 'bundle exec fastlane appcenter_upload_rls'
-              sh 'bundle exec fastlane upload_rls'
-              sh 'bundle exec fastlane github_upload_rls'
           }
           post {
             always { stash includes: "ui/espresso/BasicSample/app/build/**/*", name: "generate_rls", allowEmpty: true }
