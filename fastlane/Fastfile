@@ -78,49 +78,82 @@ platform :android do
     sh("rm -f #{signed_aab_file}.aab ||:")
     sh("rm -f #{signed_apk_file}.apk ||:")
 
-    android_playstore_file =  "/Users/duncwa/cicdgit/creds/aos/upload-keystore.jks"
+    # JENKINSfile for RLS env vars
+    # APPCENTER_TOKEN_DLO = credentials('s.appcenterduncwa_full')
+    # KEYSTOREFILE = credentials('s.android_playstore_store_file')
+    # KEYSTOREPASSWORD = credentials('s.android_playstore_pwd')
+    # KEYSTOREALIAS = credentials('s.android_playstore_alias')
+
+    android_playstore_file =  "/Users/cicdbuild/cicdgit/creds/aos/upload-keystore.jks"
     android_playstore_pwd = ENV["KEYSTOREPASSWORD"]
     android_playstore_alias = "upload"
-    android_sdk_directory = ENV["ANDROID_HOME"]
+    android_home = ENV["ANDROID_HOME"]
     #sh("printenv")
     gradle(
       task: "assemble",
       build_type: "Release",
       project_dir: 'ui/espresso/BasicSample',
-      print_command: false
+      print_command: false,
+      print_command_output: false,
+      properties: {
+        "android.injected.signing.store.file" => android_playstore_file,
+        "android.injected.signing.store.password" => android_playstore_pwd,
+        "android.injected.signing.key.alias" => android_playstore_alias,
+        "android.injected.signing.key.password" => android_playstore_pwd,
+      }
     )
     gradle(
       task: "bundle",
       build_type: "Release",
       project_dir: 'ui/espresso/BasicSample',
       print_command: false,
+      print_command_output: false,
+      properties: {
+        "android.injected.signing.store.file" => android_playstore_file,
+        "android.injected.signing.store.password" => android_playstore_pwd,
+        "android.injected.signing.key.alias" => android_playstore_alias,
+        "android.injected.signing.key.password" => android_playstore_pwd,
+      }
     )
 
     flavor = ENV["FLAVOR"]
 
     keystore_path = "/Users/duncwa/cicdgit/creds/aos/upload-keystore.jks"
-    aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab"
-    apk_file = "../ui/espresso/BasicSample/app/build/outputs/apk/release/app-release-unsigned.apk"
+    #aab_file = "../ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab"
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    sigalgo = "SHA256withRSA" #MD5withRSA # SHA256withRSA
+    digestalgo = "SHA-256" #SHA1 # SHA-256
 
-    sigalg = "MD5withRSA"
-    digestalg = "SHA1"
+    ###sh("zip -d #{apk_file} META-INF/\*.RSA META-INF/\*.SF META/\*.MF ||:")
 
-    sh("zip -d #{apk_file} META-INF/\*.RSA META-INF/\*.SF META/\*.MF ||:")
+    # sh('jarsigner -verbose -sigalg $sigalgo -digestalg $digestalgo -keystore $android_playstore_file -storepass $android_playstore_pwd -keypass $android_playstore_pwd $aab_file $android_playstore_alias')
+    # sh('jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore $(KeyStoreFile.secureFilePath) -storepass $(StorePassword) -keypass $(KeyPassword) $(system.defaultworkingdirectory)/app/build/outputs/bundle/release/app-release.aab $(KeyStoreAlias)')
+    ###sh('jarsigner -verbose -sigalg \"$sigalgo\" -digestalg \"$digestalgo\" -keystore $keystore_path -storepass \"$android_playstore_pwd\" -keypass \"$android_playstore_pwd\" \"$aab_file\" $android_playstore_alias')
 
-    sh('jarsigner -verbose -sigalg $sigalg -digestalg $digestalg -keystore $android_playstore_file -storepass $android_playstore_pwd $aab_file $android_playstore_alias')
-    zipalign = "#{android_home}/build-tools/30.0.2/zipalign" #APK Only
-    apksigner = "#{android_home}/build-tools/30.0.2/apksigner" #APK Only
+    ###zipalign = "#{android_home}/build-tools/30.0.2/zipalign" #APK Only
+    ###apksigner = "#{android_home}/build-tools/30.0.2/apksigner" #APK Only
 
-    sh("#{zipalign} -v 4 #{apk_file}") #APK_ONLY
-    sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-pass pass:#{android_playstore_pwd} #{apk_file}")
-    sh("#{apksigner} verify  #{apk_file}")
+    ###sh("#{zipalign} -v 4 #{apk_file}") #APK_ONLY
+    ###sh("#{apksigner} sign --v1-signing-enabled true --ks #{keystore_path} --ks-pass pass:#{android_playstore_pwd} #{apk_file}")
+    ###sh("#{apksigner} verify  #{apk_file}")
   end
 
   desc "Upload AAB files to Google Play Store"
   lane :upload_rls_aab do
+    json_key = '/Users/cicdbuild/cicdgit/creds/aos/GooglePlayAPIKey/779267752917-17fdaa8426c9.json'
+    aab_file = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    apk_file = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    mapping_files = lane_context[SharedValues::GRADLE_ALL_MAPPING_TXT_OUTPUT_PATHS]
     upload_to_play_store(
-      aab:'ui/espresso/BasicSample/app/build/outputs/bundle/release/app-release.aab',
-      release_status: 'draft'
+      aab: aab_file,
+      apk: apk_file,
+      version_name: "1.5", #overrides buld.gradle setting in versionName
+      version_code: 2,
+      mapping: mapping_files,
+      release_status: 'draft',
+      track: 'internal',
+      json_key: json_key
     )
   end
 
