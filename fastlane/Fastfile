@@ -160,8 +160,8 @@ platform :android do
     upload_to_play_store(
       skip_upload_apk: true,
       aab: aab_file,
-      version_name: "1.5", #overrides buld.gradle setting in versionName
-      version_code: 3,
+      version_name: "1.6", #overrides buld.gradle setting in versionName
+      version_code: 4,
       # mapping: mapping_file,
       release_status: 'draft',
       track: 'internal',
